@@ -8,4 +8,11 @@ Wavees Dock is a place for all the things a Wavees Group has ever created. Why a
 ### 💌 List
 ##### A list of everything we've done.
 
-`😟 This list is empty for now, but we're working on filling it out.`
+- Homewille 🔴 Проект не готов.
+Homeville is a minecraft server. The subject of the server is post-apocalypse. There are a lot of fully custom plug-ins with full source code in this assembly. (It is located in the plugins/skript/scripts folder). This entire server was created using a scripting language called Skript. ([Tutorial](https://skripthub.net/tutorials/17 "Урок на Tutorial")).
+
+🔗 Link to source code:
+[Click here](https://github.com/wavees/dock/tree/master/projects/minecraft/Homewille "Click here")
+
+📰 Reference to documentation:
+`😟 Documentation under development`
