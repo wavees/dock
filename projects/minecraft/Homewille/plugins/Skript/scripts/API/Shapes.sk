@@ -1,0 +1,83 @@
+function helix(location: location, radius: number, angle: number, ascend: number, size: number) :: locations:
+  set {_height} and {_current} to 0
+  while {_height} is less than {_size}:
+    add {_ascend} / (360 / {_angle}) to {_height}
+    add {_angle} to {_current}
+    set {_l} to {_location}
+    add (cos ({_current} / 180) * 3.14159265358979323846) * {_radius} to x-loc of {_l}
+    add {_height} to y-loc of {_l}
+    add (sin ({_current} / 180) * 3.14159265358979323846) * {_radius} to z-loc of {_l}
+    add {_l} to {_l::*}
+  return {_l::*}
+function tornado(location: location, radius: number, angle: number, ascend: number, size: number) :: locations:
+  set {_gain} to ({_ascend} / (360 / {_angle}))
+  set {_shrink} to ({_radius} / ({_size} / {_gain}))
+  set {_height} and {_current} to 0
+  while {_height} is less than {_size}:
+    subtract {_shrink} from {_radius}
+    add {_gain} to {_height}
+    add {_angle} to {_current}
+    set {_l} to {_location}
+    add (cos (({_current} / 180) * 3.14159265358979323846)) * {_radius} to x-loc of {_l}
+    add {_height} to y-loc of {_l}
+    add (sin (({_current} / 180) * 3.14159265358979323846)) * {_radius} to z-loc of {_l}
+    add {_l} to {_l::*}
+  return {_l::*}
+function sphere(location: location, radius: number, angle: number) :: locations:
+  set {_current::1} and {_current::2} to 0
+  loop floor(360.001 / {_angle}) times:
+    add {_angle} to {_current::2}
+    loop floor(360.001 / {_angle}) times:
+      add {_angle} to {_current::1}
+      set {_l} to {_location}
+      add (cos (({_current::1} / 180) * 3.14159265358979323846)) * {_radius} to x-loc of {_l}
+      add (sin ({_current::2} / 180) * 3.14159265358979323846) * ((sin (({_current::1} / 180) * 3.14159265358979323846)) * {_radius}) to y-loc of {_l}
+      add (cos ({_current::2} / 180) * 3.14159265358979323846) * ((sin (({_current::1} / 180) * 3.14159265358979323846)) * {_radius}) to z-loc of {_l}
+      add {_l} to {_l::*}
+  return {_l::*}
+function circle(location: location, radius: number, angle: number, rotation: number) :: locations:
+  set {_current} to 0
+  loop floor(360 / {_angle}) times:
+    add {_angle} to {_current}
+    set {_l} to {_location}
+    add ((cos ({_rotation} / 180) * 3.14159265358979323846) * ((cos (({_current} / 180) * 3.14159265358979323846)) * {_radius})) to x-loc of {_l}
+    add (sin ({_rotation} / 180) * 3.14159265358979323846) * ((cos (({_current} / 180) * 3.14159265358979323846)) * {_radius}) to y-loc of {_l}
+    add (sin (({_current} / 180) * 3.14159265358979323846)) * {_radius} to z-loc of {_l}
+    add {_l} to {_l::*}
+  return {_l::*}
+function line(from: location, to: location, density: number) :: locations:
+  set {_x::*} to x-loc of {_to} and x-loc of {_from}
+  set {_y::*} to y-loc of {_to} and y-loc of {_from}
+  set {_z::*} to z-loc of {_to} and z-loc of {_from}
+  loop {_density} times:
+    add ({_x::1} - {_x::2}) / {_density} to x-loc of {_from}
+    add ({_y::1} - {_y::2}) / {_density} to y-loc of {_from}
+    add ({_z::1} - {_z::2}) / {_density} to z-loc of {_from}
+    add {_from} to {_l::*}
+  return {_l::*}
+function plane(from: location, to: location, density: number) :: locations:
+  set {_x::*} to x-loc of {_to} and x-loc of {_from}
+  set {_y::*} to y-loc of {_to} and y-loc of {_from}
+  set {_z::*} to z-loc of {_to} and z-loc of {_from}
+  loop {_density} times:
+    loop {_density} times:
+      add ({_z::1} - {_z::2}) / {_density} to z-loc of {_from}
+      add {_from} to {_l::*}
+    set z-loc of {_from} to {_z::2}
+    add ({_y::1} - {_y::2}) / {_density} to y-loc of {_from}
+    add ({_x::1} - {_x::2}) / {_density} to x-loc of {_from}
+  return {_l::*}
+function cube(from: location, to: location, density: number) :: locations:
+  add line({_from}, location({_from}'s x-loc, {_to}'s y-loc, {_from}'s z-loc, {_from}'s world), {_density}) to {_l::*}
+  add line({_from}, location({_to}'s x-loc, {_from}'s y-loc, {_from}'s z-loc, {_from}'s world), {_density}) to {_l::*}
+  add line(location({_to}'s x-loc, {_from}'s y-loc, {_from}'s z-loc, {_from}'s world), location({_to}'s x-loc, {_to}'s y-loc, {_from}'s z-loc, {_from}'s world), {_density}) to {_l::*}
+  add line(location({_from}'s x-loc, {_to}'s y-loc, {_from}'s z-loc, {_from}'s world), location({_to}'s x-loc, {_to}'s y-loc, {_from}'s z-loc, {_from}'s world), {_density}) to {_l::*}
+  add line({_to}, location({_to}'s x-loc, {_from}'s y-loc, {_to}'s z-loc, {_to}'s world), {_density}) to {_l::*}
+  add line({_to}, location({_from}'s x-loc, {_to}'s y-loc, {_to}'s z-loc, {_to}'s world), {_density}) to {_l::*}
+  add line(location({_from}'s x-loc, {_to}'s y-loc, {_to}'s z-loc, {_to}'s world), location({_from}'s x-loc, {_from}'s y-loc, {_to}'s z-loc, {_to}'s world), {_density}) to {_l::*}
+  add line(location({_to}'s x-loc, {_from}'s y-loc, {_to}'s z-loc, {_to}'s world), location({_from}'s x-loc, {_from}'s y-loc, {_to}'s z-loc, {_to}'s world), {_density}) to {_l::*}
+  add line({_from}, location({_from}'s x-loc, {_from}'s y-loc, {_to}'s z-loc, {_to}'s world), {_density}) to {_l::*}
+  add line(location({_from}'s x-loc, {_to}'s y-loc, {_from}'s z-loc, {_to}'s world), location({_from}'s x-loc, {_to}'s y-loc, {_to}'s z-loc, {_to}'s world), {_density}) to {_l::*}
+  add line(location({_to}'s x-loc, {_from}'s y-loc, {_from}'s z-loc, {_to}'s world), location({_to}'s x-loc, {_from}'s y-loc, {_to}'s z-loc, {_to}'s world), {_density}) to {_l::*}
+  add line(location({_to}'s x-loc, {_to}'s y-loc, {_from}'s z-loc, {_to}'s world), location({_to}'s x-loc, {_to}'s y-loc, {_to}'s z-loc, {_to}'s world), {_density}) to {_l::*}
+  return {_l::*}

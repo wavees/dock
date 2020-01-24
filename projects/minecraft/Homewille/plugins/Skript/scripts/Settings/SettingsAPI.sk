@@ -1,0 +1,29 @@
+options:
+  folder: /home/Database/users
+
+function getSetting(player: player, name: string) :: string:
+  set {_uuid} to {_player}'s uuid
+
+  set {_file} to "{@folder}/%{_uuid}%.yml"
+  set {_random} to random integer between 000 and 999
+
+  load yaml "%{_file}%" as "%{_random}%"
+
+  set {_setting} to skript-yaml value "settings.%{_name}%" from "%{_random}%"
+  if {_setting} is not set:
+    set {_setting} to "false"
+
+  unload yaml "%{_file}%"
+  return "%{_setting}%"
+
+function setSetting(player: player, name: string, setting: string):
+  set {_uuid} to {_player}'s uuid
+
+  set {_file} to "{@folder}/%{_uuid}%.yml"
+  set {_random} to random integer between 000 and 999
+
+  load yaml "%{_file}%" as "%{_random}%"
+
+  set skript-yaml value "settings.%{_name}%" from "%{_random}%" to {_setting}
+
+  save yaml "%{_random}%"

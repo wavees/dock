@@ -1,0 +1,7 @@
+HideEnable: true
+HideWorlds: false
+HideRegions: false
+HideWorldlist:
+- world
+HideRegionsList:
+- region1

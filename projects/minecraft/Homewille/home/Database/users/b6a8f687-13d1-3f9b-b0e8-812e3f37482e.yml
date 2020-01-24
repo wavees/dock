@@ -1,0 +1,8 @@
+player:
+    password: a32d6de27bd7ba7a81c5de38a6f8b25ae4b1e7cba25113a66c3102b80424cb01
+    lastIp: 92.101.133.49
+    deadTimer: 1578687243
+
+settings:
+    chat:
+        hideGlobal: false

@@ -1,0 +1,129 @@
+function chooseSkill(player: player, skill: string):
+  if {skillTree::%{_player}%::returnToWorkbench} is true:
+    set {_return::workbench} to true
+  
+  if getSkillTree({_player}) is "0":
+    open virtual chest inventory with size 3 named "&8Выбор умения" to {_player}
+
+    set {_back} to player head named "&9➡ &fВернуться назад" with lore "&7~ Очень сложно..."
+    add "{SkullOwner:{Id:""e2944f18-e8a0-4ef0-823d-1a37b818bd92"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTU2YTM2MTg0NTllNDNiMjg3YjIyYjdlMjM1ZWM2OTk1OTQ1NDZjNmZjZDZkYzg0YmZjYTRjZjMwYWI5MzExIn19fQ==""}]}}}" to item-nbt of {_back}
+
+    # Подтвердить
+    if checkSkillTree({_skill}) is true:
+      set {_continue} to player head named "&e⚠ &fВы уверены?" with lore "&7~ Вы больше не сможете сменить ремесло! Вы сможете", "&7его сменить только тогда, когда умрёте как минимум 20", "&7раз! Лучше задуматься над этим...", "" and "&a➲ &fНажмите, что бы подтвердить"
+      add "" to item-nbt of {_continue}
+
+      format gui slot 12 of {_player} with {_continue} to run:
+        close player's inventory
+
+        play sound "item.totem.use" with volume 1 and pitch 1 at {_player}
+        play 600 totem at {_player}
+
+        send title "&9⚒ &f«Новая Работа»" with subtitle "&7~ Ваше новое ремесло: %getSkillTreeName({_skill})%" to {_player} for 4 seconds with 0 ticks fade in and 1 second fade out
+
+        setSkillTree({_player}, {_skill})
+    else:
+      set {_error} to player head named "&c⚠ &fОшибка" with lore "&7~ Мы не смогли обнаружить описание данного ремесла", "&7в нашей базе данных. Попросим вас обратиться к Администрации.", "" and "&f{_skill}: &7%{_skill}%"
+      add "{SkullOwner:{Id:""01e6224d-f694-4403-b2ce-2792431ccb0c"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGQ5YjYzYzNiNzQ1ZjVkZjg1MTE3NTk3MmVlZmQ3N2VjYTUyNjlkNDg2N2M0ZWRhMTU5NGZmM2U2NjM0NjU4In19fQ==""}]}}}" to item-nbt of {_error}
+
+      format gui slot 12 of {_player} with {_error}
+
+    format gui slot 14 of {_player} with {_back} to run:
+      if {_return::workbench} is true:
+        set {skillTree::%{_player}%::returnToWorkbench} to true
+      execute {_player} command "/skill"
+
+      wait 1 tick
+      delete {skillTree::%{_player}%::returnToWorkbench}  
+
+command skill [<text>]:
+  trigger:
+    if arg 1 is not set:
+      if {skills::temp::%player%::location} is set:
+        set {_location} to {skills::temp::%player%::location}
+        delete {skills::temp::%player%::location}
+      if getSkillTree(player) is "0":
+        # Игрок не выбрал ветку навыков
+        open virtual chest inventory with size 5 named "&8Ветка умений" to player 
+
+        # {SkullOwner:{Id:"""",Properties:{textures:[{Value:""""}]}}}
+
+        if {skillTree::%player%::returnToWorkbench} is true:
+          set {_return::workbench} to true
+
+        # Вернуться назад
+        if {_return::workbench} is true:
+          set {_back} to player head named "&9➡ &fВернуться назад" with lore "&7~ Вернёт вас в меню верстака. Довольно-таки удобно."
+          add "{SkullOwner:{Id:""e2944f18-e8a0-4ef0-823d-1a37b818bd92"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTU2YTM2MTg0NTllNDNiMjg3YjIyYjdlMjM1ZWM2OTk1OTQ1NDZjNmZjZDZkYzg0YmZjYTRjZjMwYWI5MzExIn19fQ==""}]}}}" to item-nbt of {_back}
+
+          format gui slot 15 of player with {_back} to run:
+            openWorkbench(player, {_location})
+        else:
+          set {_empty} to player head named "&7Пусто"
+          add "{SkullOwner:{Id:""ee6cb849-1384-4efa-bed7-23ff26bf79b1"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWQ5MzExN2I5ZTE4MGUwZGMzOWU1ZThhMDUwODQ4MmNmMWY2MGU0NDZlMDIyOTc4ZmUwNjUxYTU2MmE1OTdmIn19fQ==""}]}}}" to item-nbt of {_empty}
+
+          format gui slot 15 of player with {_empty}
+        
+        # -----------------------------------
+        #             Список
+        # Шитьё, Фермерство,
+        # Вооружение, Строительство и Алхимия
+        set {_sewing} to player head named "&9¹ &fШитьё" with lore "&7~ Вы - защищаете команду от холода. Вы сможете шить одежду,", "&7палатки, спальные мешки, бинты и многое другое. Довольно-таки", "&7полезное ремесло."
+        add "{SkullOwner:{Id:""372c81ef-d33f-334a-802f-83f38bd473c0"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDYzYTRlOTg4MmYxODkyMzNmOWJmMTEyMWI5NmI3OTliYjNmZDM3NzA1NGYzOWRkMTlhNWQ4M2JlMDFmZjYifX19""}]}}}" to item-nbt of {_sewing}
+
+        format gui slot 11 of player with {_sewing} to run:
+          if {_return::workbench} is true:
+            set {skillTree::%player%::returnToWorkbench} to true
+          chooseSkill(player, "sewing")
+
+          wait 1 tick
+          delete {skillTree::%player%::returnToWorkbench}
+
+        set {_fermer} to player head named "&9² &fФермерство" with lore "&7~ Теперь вы будете кормить всё поселение! Вы сможете", "&7строить небольшие фермы, и вообще будете знать как правильно садить", "&7какие-либо растения, фрукты и овощи, тоесть всё, что нужно для", "&7пропитания"
+        add "{SkullOwner:{Id:""45e30ff8-17c4-4778-a2df-b215ba53f8c7"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjY1NTE3MTZkNWQxZjE2NTc3MTY2N2E3YjQ4MmM5M2RiM2ViNDQ0ZTczZGVlNzMzZmYxOTFjZWY4OWI5YTQxIn19fQ==""}]}}}" to item-nbt of {_fermer}
+
+        format gui slot 12 of player with {_fermer} to run:
+          if {_return::workbench} is true:
+            set {skillTree::%player%::returnToWorkbench} to true
+          chooseSkill(player, "fermer")
+
+          wait 1 tick
+          delete {skillTree::%player%::returnToWorkbench}
+
+        set {_weaponry} to player head named "&9³ &fВооружение" with lore "&7~ Вы будете снабжать всю команду инструментами и оружием,", "&7которое очень нужно для выживание всего отряда. Это", "&7будет не легко, но это очень нужно всей команде!"
+        add "{SkullOwner:{Id:""21fa9f43-347a-4e03-b8a4-a27aee18f44f"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODIyYTQ4YTU3NTllZGRlZjllMjkxOGZjODU5OTZmODQ5MWNjOTI1NzhkNTRkY2Q2MmUyYjZkOTEzYmZiNDIxZSJ9fX0=""}]}}}" to item-nbt of {_weaponry}
+
+        format gui slot 13 of player with {_weaponry} to run:
+          if {_return::workbench} is true:
+            set {skillTree::%player%::returnToWorkbench} to true
+          chooseSkill(player, "weaponry")
+
+          wait 1 tick
+          delete {skillTree::%player%::returnToWorkbench}
+
+        set {_building} to player head named "&9⁴ &fСтроительство" with lore "&7~ Именно вы теперь будете заниматься строительством и обустройков всей", "&7базы. Именно вы будете строить защитные сооружения и", "&7другие очень полезные вещи - начиная от защиты и заканчивая", "&7ловушками и целыми зданиями!"
+        add "{SkullOwner:{Id:""7ebdada8-0140-4f12-b8fb-2ef1916ea963"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmQ3NDI4MzlkMzQxMjVkMTI4ZGY0ZTIzZWI2Mzc0OTgyYWM2N2Q3MmNiZjYzOTI1ZWQ2OTFlOTNjMjRlZmMzNyJ9fX0=""}]}}}" to item-nbt of {_building}
+
+        format gui slot 20 of player with {_building} to run:
+          if {_return::workbench} is true:
+            set {skillTree::%player%::returnToWorkbench} to true
+          chooseSkill(player, "buildling")
+
+          wait 1 tick
+          delete {skillTree::%player%::returnToWorkbench}
+
+        set {_alchemy} to player head named "&9⁵ &fАлхимия" with lore "&7~ Алхимия - тоже довольно-таки нужна, ибо именно вы", "&7будете, так сказать, медиком всей команды. Именно вы", "&7будете варить различные лекарства от болезней, варить лечебные", "&7лекарства ну и многое другое!"
+        add "{SkullOwner:{Id:""0274de28-313d-4e5e-b2c3-06fe72249550"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmZjOWQ0NzFmMzczNTU3NTgzMzkyZWFlZmFmNjU5YmJmZWMyMzg1YzYwZmJhYjY4NjBmMjM2YjVmYjI0MSJ9fX0=""}]}}}" to item-nbt of {_alchemy}
+
+        format gui slot 21 of player with {_alchemy} to run:
+          if {_return::workbench} is true:
+            set {skillTree::%player%::returnToWorkbench} to true
+          chooseSkill(player, "alchemy")
+
+          wait 1 tick
+          delete {skillTree::%player%::returnToWorkbench}
+
+        set {_empty} to player head named "&7"
+        add "{SkullOwner:{Id:""ee6cb849-1384-4efa-bed7-23ff26bf79b1"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWQ5MzExN2I5ZTE4MGUwZGMzOWU1ZThhMDUwODQ4MmNmMWY2MGU0NDZlMDIyOTc4ZmUwNjUxYTU2MmE1OTdmIn19fQ==""}]}}}" to item-nbt of {_empty}
+
+        format gui slot 22,29,30,31 of player with {_empty}

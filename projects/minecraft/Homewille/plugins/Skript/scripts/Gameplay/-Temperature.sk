@@ -1,0 +1,3 @@
+command temp:
+  trigger:
+    message "%temperature of the targeted block%"

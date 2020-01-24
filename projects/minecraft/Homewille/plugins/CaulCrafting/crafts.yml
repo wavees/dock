@@ -1,0 +1,101 @@
+Crafts:
+  936ed4aa-7f64-442d-9ca3-3db1efee1936:
+    result:
+      items:
+      - ==: org.bukkit.inventory.ItemStack
+        type: IRON_INGOT
+        meta:
+          ==: ItemMeta
+          meta-type: UNSPECIFIC
+          display-name: §9⚀ §fЖелезный слиток
+          lore:
+          - §7~ Один из представителей цветных металлов, который
+          - §7используется для создания очень прочной брони.
+      probs:
+      - 750
+    cmds: []
+    craft:
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_NUGGET
+      amount: 3
+      meta:
+        ==: ItemMeta
+        meta-type: UNSPECIFIC
+        display-name: §9⚀ §fКусочек железа
+        lore:
+        - §7~ Довольно-таки часто используется в создании оружия
+        - §7и брони. И обе эти вещи являются почти что необходимыми
+        - §7в этом мире!
+    experience: 0
+    redstonepower: false
+  7fa4da72-88ff-435e-b7cd-840657f29d66:
+    result:
+      items:
+      - ==: org.bukkit.inventory.ItemStack
+        type: CLAY_BALL
+        amount: 2
+        meta:
+          ==: ItemMeta
+          meta-type: UNSPECIFIC
+          display-name: §9⚀ §fГлина
+          lore:
+          - §7~ Довольно-таки полезный ингридиент. Используется для
+          - §7создания патронов малого калибра ну и для изготовления
+          - §7кирпичей и других интересных штук
+      probs:
+      - 1000
+    cmds: []
+    craft:
+    - ==: org.bukkit.inventory.ItemStack
+      type: CLAY_BRICK
+      meta:
+        ==: ItemMeta
+        meta-type: UNSPECIFIC
+        display-name: §9⚁ §fКирпич
+        lore:
+        - §7~ Очень полезный ингридиент. Используется в
+        - §7изготовлении патронов малого калибра, а так же
+        - §7используется для постройки оборонительныъ сооружений.
+    experience: 0
+    redstonepower: false
+  3e0af3b6-7421-4e40-92d4-1fbc2904fceb:
+    result.items:
+    - ==: org.bukkit.inventory.ItemStack
+      type: CLAY_BRICK
+      amount: 2
+      meta:
+        ==: ItemMeta
+        meta-type: UNSPECIFIC
+        display-name: §9⚃ §fМедный сплав
+        lore:
+        - §7~ Очень полезный сплав, который используется
+        - §7для создания патрон, которые в данных реалиях
+        - §7являются чуть ли не главной валютой...
+    result.probs:
+    - 1000
+    cmds: []
+    craft:
+    - ==: org.bukkit.inventory.ItemStack
+      type: CLAY_BALL
+      amount: 4
+      meta:
+        ==: ItemMeta
+        meta-type: UNSPECIFIC
+        display-name: §9⚀ §fГлина
+        lore:
+        - §7~ Довольно-таки полезный ингридиент. Используется для
+        - §7создания патронов малого калибра ну и для изготовления
+        - §7кирпичей и других интересных штук
+    - ==: org.bukkit.inventory.ItemStack
+      type: INK_SACK
+      damage: 3
+      meta:
+        ==: ItemMeta
+        meta-type: UNSPECIFIC
+        display-name: §9⚃ §fКусочек меди
+        lore:
+        - §7~ Сплав этого материала очень полезен в изготовлении
+        - §7патрон малого калибра. А как вы знаете, патроны очень
+        - §7ценятся в это время!
+    experience: 0
+    redstonepower: false

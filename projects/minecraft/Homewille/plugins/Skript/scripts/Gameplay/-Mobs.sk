@@ -1,0 +1,10 @@
+on explosion:
+  cancel event
+
+on spawn:
+  if event-entity isn't zombie or husk or pig or cow:
+    set {_cancel} to true
+  if "%event-entity%" contains "armor stand":
+    delete {_cancel}
+  if {_cancel} is true:
+    cancel event

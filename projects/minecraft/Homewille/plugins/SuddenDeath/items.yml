@@ -1,0 +1,36 @@
+BANDAGE:
+  name: '&a☕ &fБинт'
+  lore:
+  - '&7~ Очень полезная вещь в этих реалиях.'
+  - '&7Может остановить кровотечение и помочь'
+  - '&7вам выжить.'
+  craft-enabled: true
+  craft:
+  - AIR,AIR,AIR
+  - PAPER,STICK,PAPER
+  - AIR,AIR,AIR
+STRANGE_BREW:
+  name: Strange Brew
+  lore:
+  - Stops &nInfection&r.
+  craft-enabled: true
+  craft:
+  - AIR,AIR,AIR
+  - INK_SACK,BOWL,CLAY_BALL
+  - AIR,AIR,AIR
+RAW_HUMAN_FLESH:
+  name: Human Flesh
+  lore:
+  - Some fresh human meet.
+  - I wonder if I can cook it?
+HUMAN_BONE:
+  name: Human Bone
+COOKED_HUMAN_FLESH:
+  name: Cooked Human Flesh
+  lore:
+  - Looks tasty!
+SHARP_KNIFE:
+  name: Sharp Knife
+  lore:
+  - A super sharp knife.
+  - Hit someone to make him bleed.

@@ -1,0 +1,106 @@
+options:
+  folder: /home/Database/users
+
+on death:
+  if victim is player:
+    wait 1 tick
+    setDeath(player, 60)
+    set {temp::%victim%::death} to location of victim
+    force player to respawn
+
+on respawn:
+  teleport player to {temp::%player%::death}
+  set player's gamemode to spectator
+
+  checkDeath(player)
+
+on join:
+  checkDeath(player)
+
+function setDeath(player: player, time: number):
+  set {_uuid} to {_player}'s uuid
+
+  set {_file} to "{@folder}/%{_uuid}%.yml"
+  set {_random} to random integer between 000 and 999
+
+  load yaml "%{_file}%" as "%{_random}%"
+  set {_now} to convert date now to unix date
+  add {_time} to {_now}
+
+  set skript-yaml value "player.deadTimer" from "%{_random}%" to {_now}
+  delete skript-yaml value "player.respawned" from "%{_random}%"
+
+  save yaml "%{_random}%"
+
+function checkDeath(player: player):
+  set {_uuid} to {_player}'s uuid
+
+  set {_file} to "{@folder}/%{_uuid}%.yml"
+  set {_random} to random integer between 000 and 999
+
+  load yaml "%{_file}%" as "%{_random}%"
+  set {_check} to skript-yaml value "player.deadTimer" from "%{_random}%"
+  set {_respawned} to skript-yaml value "player.respawned" from "%{_random}%"
+  unload yaml "%{_random}%"
+
+  if {_check} is set:
+    set {_now} to convert date now to unix date
+    set {_time} to {_check} - {_now}
+
+    if {_time} > 0:
+      set {_waiting} to true
+
+      while {_waiting} is true:
+        if {_player} is offline:
+          stop
+        
+        set {_now} to convert date now to unix date
+        set {_time} to {_check} - {_now}
+        set {_time::visual::1} to "%{_time}% seconds" parsed as timespan
+
+        set {_time::visual} to "%{_time::visual::1}%"
+
+        replace all "minutes" in {_time::visual} with "м."
+        replace all "minute" in {_time::visual} with "м."
+
+        replace all "seconds" in {_time::visual} with "с."
+        replace all "second" in {_time::visual} with "с."
+
+        replace all " and " in {_time::visual} with " "
+
+        if {_player}'s gamemode is not spectator:
+          set {_player}'s gamemode to spectator
+
+        if {_time} <= 10:
+          send title "&c⚠ &fСкоро сможете играть!" with subtitle "&7~ Время до возрождения: %{_time::visual}%" to {_player} for 2 seconds with 0 ticks fade in and 0 ticks fade out
+        else:
+          send action bar "&7~ Время до возрождения: %{_time::visual}%" to {_player}
+        if {_time} <= 0:
+          respawn({_player})
+          stop
+
+        wait 1 tick
+    else:
+      # Проверяем, зареспавнился ли игрок...
+      if {_respawned} is not set:
+        respawn({_player})
+
+function respawn(player: player):
+  set {_location} to getRandomLocation()
+        
+  set {_file} to "{@folder}/%{_uuid}%.yml"
+  set {_random} to random integer between 000 and 999
+        
+  load yaml "%{_file}%" as "%{_random}%"
+
+  set skript-yaml value "player.respawned" from "%{_random}%" to true
+
+  set {_player}'s gamemode to survival
+  set {_item} to wooden sword named "&c⚔ &fБита" with lore "&7~ Самое простое оружие для выживших. С его помощью", "&7вы, конечно же, не сможете уничтожить прямо-таки всех", "&7монстров, но сможете временно защититься от них."
+
+  add 1 of {_item} to {_player}'s inventory
+
+  teleport {_player} to {_location}
+  send title "&fХоумвиль, &9%getDate(0)% &fдень" with subtitle "&7~10 км от Парадайса." to {_player} for 2 seconds with 0 ticks fade in and 1 second fade out
+
+  save yaml "%{_random}%"

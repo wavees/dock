@@ -1,0 +1,17 @@
+function getLocation(location: text, world: text) :: location:
+  # Создаём позицию.
+  replace all " " in {_locations::prep} with ""
+  set {_locations::prep::*} to {_location} split at ","
+
+  set {_locations::x} to {_locations::prep::1}
+  set {_locations::y} to {_locations::prep::2}
+  set {_locations::z} to {_locations::prep::3}
+
+  evaluate logging errors in {_errors::*}:
+    set {_location} to location at %{_locations::x}%, %{_locations::y}%, %{_locations::z}% in world "%{_world}%"
+
+  if {_errors::*} is not set:
+  # Отправляем позицию
+    return {_location}
+  else:
+    stop

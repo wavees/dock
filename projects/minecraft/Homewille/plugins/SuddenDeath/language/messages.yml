@@ -1,0 +1,38 @@
+now-bleeding: You are now bleeding. Quickly find a bandage or you'll die within seconds.
+now-infected: You're starting to feel very wieird...
+use-strange-brew: You are no longer infected.
+use-bandage: You cured all your wounds.
+freddy-summoned: You summoned Freddy!
+lost-exp: 'You just lost #exp# EXP!'
+not-enough-perms: You don't have enough permissions.
+chose-diff: You successfully selected &f#difficulty#&e.
+blood-moon: The Bloodmoon is rising...
+thunderstorm: You feel the air above you getting colder...
+gui-name: Your Status
+gui-bleeding-name: Bleeding
+gui-bleeding-lore:
+- You are slowly losing life! Quickly
+- find or craft a bandage to stop bleeding!
+gui-infected-name: Infected
+gui-infected-lore:
+- You're feeling very wieird.. Find
+- a Strange Brew to stop that.
+gui-no-special-status-name: No special status
+gui-no-special-status-lore:
+- You seem clean.. for now.
+gui-difficulty-lore:
+- 'Increased Damage: &f#increased-damage#&7%'
+- 'Maximum Health: &f#max-health#'
+- 'Difficulty: #difficulty#'
+gui-click-select-diff: Click to select it as your difficulty.
+gui-current-diff: This is your current difficulty.
+current: Current
+admin-gui-name: SD Admin GUI
+admin-gui-previous: Previous
+admin-gui-next: Next
+monster-gui-name: Mob Editor
+monster-gui-click-change-value: Click to change this value.
+monster-gui-drag-drop-change-value: Drag and drop an item to change this value.
+monster-gui-right-click-remove-value: Right click to remove this value.
+monster-gui-right-click-remove-last-value: Click to remove the last value.
+monster-gui-click-add-value: Click to add a value.

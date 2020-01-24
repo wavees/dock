@@ -1,0 +1,236 @@
+# ---------------------------
+# Отменяем изменение погоды
+# Это очень важно, да. Погода
+# будет во всех мирах одинаковая,
+# но не щас.
+
+command startAgain [<number>]:
+  trigger:
+    # Месяца
+    set {data::islands::time} to "23:55"
+
+    set {data::islands::time::months::visual::1} to "Января"
+    set {data::islands::time::months::visual::2} to "Февраля"
+    set {data::islands::time::months::visual::3} to "Марта"
+    set {data::islands::time::months::visual::4} to "Апреля"
+    set {data::islands::time::months::visual::5} to "Мая"
+    set {data::islands::time::months::visual::6} to "Июня"
+    set {data::islands::time::months::visual::7} to "Июля"
+    set {data::islands::time::months::visual::8} to "Августа"
+    set {data::islands::time::months::visual::9} to "Сентября"
+    set {data::islands::time::months::visual::10} to "Октября"
+    set {data::islands::time::months::visual::11} to "Ноября"
+    set {data::islands::time::months::visual::12} to "Декабря"
+
+    set {data::islands::time::month} to "Январь"
+    set {data::islands::time::days} to arg 1
+
+    set {data::islands::time::year} to 2009
+
+    # delete {data::islands::time::months::*}
+# ---------------------------
+# Дни, месяца, недели.
+# Вот тут вот всё самое интересное!
+# Тут происходит изменение дней,
+# месяцев, и так далее!
+every 1 second:
+  if {data::islands::time} is not set:
+    set {data::islands::time} to "00:00"
+  # Обработка времени...
+  set {_prep::*} to {data::islands::time} split at ":"
+  set {_hours} to {_prep::1} parsed as number
+  set {_minutes} to {_prep::2} parsed as number
+
+  if {_minutes} >= 60:
+    # Меняем...
+    set {_minutes} to 00
+
+    if {_hours} is 6:
+      loop all entities:
+        if "%loop-entity%" contains "husk" or "zombie":
+          kill loop-entity
+          play 2 totem on location of loop-entity
+          
+          wait 1 tick
+
+    if {_hours} >= 23:
+      # --------------------------------
+      # Прошёл день. Добавляем один день
+      # к дням, и если прошёл месяц -
+      # то меняем месяц.
+
+      if {data::islands::time::days} is not set:
+        set {data::islands::time::days} to 0
+
+      add 1 to {data::islands::time::days}
+      # Месяца
+      if {data::islands::time::days} >= 30:
+        set {data::islands::time::days} to 1
+        set {_month} to {data::islands::time::month}
+
+        # Меняем месяц...
+        set {_index} to 1
+        loop {data::islands::time::months::*}:
+          if "%loop-value%" is "%{_month}%":
+            exit 1 loop
+          add 1 to {_index}
+
+        add 1 to {_index}
+        if {_index} > 12:
+          # Новый год! Юхуу!
+          set {_index} to 1
+
+          add 1 to {data::islands::time::year}
+
+        set {data::islands::time::month} to {data::islands::time::months::%{_index}%}
+
+        # Визуал...
+      # add "&e✹ &fНовый день начался!" to {_random::*}
+      # add "&9☃ &fНовый день уже на подходе!" to {_random::*}
+      # add "&e⚒ &fНовый день - новые проблемы." to {_random::*}
+
+      # Добавляем баланс игрокам...
+      # set {_title} to random element of {_random::*}
+      # loop all players:
+      #   set {_file} to "../home/Database/users/%loop-player's uuid%.yml"
+      #   set {_random} to random integer between 000 and 999
+
+      #   load yaml "%{_file}%" as "%{_file}%.secure.%{_random}%"
+
+      #   if skript-yaml value "settings.sendNewDayNotifi" from "%{_file}%.secure.%{_random}%" is not set:
+      #     set {_settings::sendNewDayNotifi} to true
+      #   else:
+      #     set {_settings::sendNewDayNotifi} to skript-yaml value "settings.sendNewDayNotifi" from "%{_file}%.secure.%{_random}%"
+
+      #   if {_settings::sendNewDayNotifi} is true:
+      #     play sound "block.end_portal.spawn" with volume 0.6 with pitch 1.6 at loop-player for loop-player
+      #     send title "%{_title}%" with subtitle "&7Сегодняшнее число: %getDate(0)%" to loop-player
+      #     if skript-yaml value "player.tooltips.islands.sendNewDayNotifi" from "%{_file}%.secure.%{_random}%" is not set:
+      #       send "" to loop-player
+      #       send "&9ℹ &fВы можете отключить уведомление об новом дне в настройках" to loop-player
+      #       send "  &fДа-да, тут есть настройки, в которых вы сможете настроить" to loop-player
+      #       send "  &fИгру под себя! Это же удобно, не так ли?" to loop-player
+      #       send "" to loop-player
+
+      #       set skript-yaml value "player.tooltips.islands.sendNewDayNotifi" from "%{_file}%.secure.%{_random}%" to true
+      #       save yaml "%{_file}%.secure.%{_random}%"
+
+      #   unload yaml "%{_file}%.secure.%{_random}%"
+
+      set {_hours} to 00
+    else:
+      add 1 to {_hours}
+  if {_minutes} is not set:
+    set {_minutes} to 00
+  if {_hours} is not set:
+    set {_hours} to 00
+
+  # Ещё одна проверка...
+  set {_msg} to "%{_minutes}%"
+  set {_minutes::*} to {_msg} split at ""
+  delete last element of {_minutes::*}
+
+  if size of {_minutes::*} <= 2:
+    set {_minutes::rollback} to {_minutes}
+    set {_minutes} to "0%{_minutes}%"
+  set {data::islands::time::visual} to "%{_hours}%:%{_minutes}%"
+  loop all worlds:
+    set {_world} to loop-value-1
+    evaluate logging in {_errors::*}:
+      set "%{_world}%"'s time to %{_hours}%:%{_minutes}%
+    if {_errors::*} is set:
+      loop {_errors::*}:
+        broadcast "&cerror in time (World: %loop-value-1%) &f%loop-value-2%"
+
+  if {_minutes::rollback} is set:
+    set {_minutes} to {_minutes::rollback}
+  add 1 to {_minutes}
+  set {data::islands::time} to "%{_hours}%:%{_minutes}%"
+
+
+# ---------------------------
+#         SIDEBAR
+# Очень полезная штука. Пока что
+# она будет создаваться, и
+# обновляться вот тут вот.
+#
+
+every 1 second:
+  set {_time} to {data::islands::time::visual}
+  set {_prep::*} to {_time} split at ":"
+  set {_hours} to {_prep::1} parsed as number
+  set {_minutes} to {_prep::2} parsed as number
+  if {_hours} is not set:
+    set {_hours} to 0
+  if {_minutes} is not set:
+    set {_minutes} to 0
+
+  if {_hours} >= 0:
+    if {_hours} <= 4:
+      if {_minutes} <= 25:
+        set {_symbol} to "&9●"
+        set {_color} to "&9"
+      else:
+        set {_symbol} to "&e⚙"
+        set {_color} to "&e"
+    else if {_hours} < 9:
+      set {_symbol} to "&e⚙"
+      set {_color} to "&e"
+    else if {_hours} < 17:
+      set {_symbol} to "&6✹"
+      set {_color} to "&6"
+    else if {_hours} > 17:
+      set {_symbol} to "&b○"
+      set {_color} to "&b"
+      if {_hours} > 20:
+        set {_symbol} to "&9●"
+        set {_color} to "&9"
+
+  if {_symbol} is not set:
+    set {_symbol} to "&c¿"
+  if {_color} is not set:
+    set {_color} to "&c"
+# ---------------------------
+#     FUNCTION GETDATE()
+# Функция, которая отвечает
+# за визуальное "взятие" даты.
+#
+# Возвращяет:
+# - текст: Дата в текстовом
+# формате.
+
+function getDate(type: number) :: string:
+  # Подготовка данных
+  set {_date::year} to {data::islands::time::year}
+  if {_date::year} is not set:
+    set {data::islands::time::year} to 0
+    set {_date::year} to 0
+  set {_date::month} to {data::islands::time::month}
+  if {_date::month} is not set:
+    set {data::islands::time::month} to "Январь"
+    set {_date::month} to "Январь"
+  set {_date::day} to {data::islands::time::days}
+  if {_date::day} is not set:
+    set {data::islands::time::days} to 1
+    set {_date::day} to 1
+  set {_date::time} to {data::islands::time}
+  if {_date::time} is not set:
+    set {data::islands::time} to "00:00"
+    set {_date::time} to "00:00"
+
+  if {_type} is 0:
+    set {_index} to 1
+    loop {data::islands::time::months::*}:
+      if "%loop-value%" is "%{_date::month}%":
+        exit 1 loop
+      add 1 to {_index}
+    set {_date::month} to {data::islands::time::months::visual::%{_index}%}
+    return "%{_date::day}%"
+  if {_type} is 1:
+    set {_index} to 1
+    loop {data::islands::time::months::*}:
+      if "%loop-value%" is "%{_date::month}%":
+        exit 1 loop
+      add 1 to {_index}
+    set {_date::month} to {data::islands::time::months::visual::%{_index}%}
+    return "&9%{_date::day}% &f%{_date::month}%"

@@ -1,0 +1,12 @@
+every 1 tick:
+  loop all players:
+    if "%loop-player's world%" is "Auth":
+      set tab header to "%nl% &e☃ &fАвторизация  %nl% &fДля того, что бы продолжить играть, %nl% &fпросто следуйте простым шагам из чата! %nl%" and footer to "%nl% &fпроект &eParadise %nl%" for loop-player
+      # set tablist header of loop-player to "%nl% &a☃ &fАвторизация  %nl% &fДля того, что бы продолжить играть, %nl% &fпросто следуйте простым шагам из чата! %nl%"
+      # set tablist footer of loop-player to "%nl% &fпроект &aHomewille %nl%"
+    else:
+      # &e☕ &fДата и время: &e%{data::islands::time::visual}% &7(%getDate(1)%)
+      # set loop-player's display name to "Соси хуй" 
+      set tab header to "%nl% &e▣ &fHomewille %nl%" and footer to "%nl% &eℹ &fВажные ссылки: %nl% &eᴅɪsᴄᴏʀᴅ &fdiscord.gg/jxPVzy4 " for loop-player
+      # set tablist header of loop-player to "%nl% &e&l▄&6&l▆ &f&lParadise &6&l▆&e&l▄%nl%"
+      # set tablist footer of loop-player to "%nl% &eℹ &fВажные ссылки: %nl%  &eᴠᴋ &f %nl%  &eᴅɪsᴄᴏʀᴅ &f"

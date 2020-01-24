@@ -1,0 +1,13 @@
+player:
+    password: 9d5e098fbf88e4ba925e1212a964c42463da07fc08b2056462ab8709eb3b54c4
+    lastIp: 176.103.201.40
+    deadTimer: 1578779313
+
+blueprints:
+    leather:
+        armor: true
+    choosed: sewing
+
+settings:
+    chat:
+        hideGlobal: false

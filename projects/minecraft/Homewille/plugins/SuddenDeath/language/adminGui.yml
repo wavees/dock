@@ -1,0 +1,220 @@
+QUICK_MOBS:
+  name: Quick Mobs
+  lore:
+  - Monsters have more movement speed.
+  - §cConfigurable for each monster.
+  - §cNot supported in 1.8
+FORCE_OF_THE_UNDEAD:
+  name: Force of the Undead
+  lore:
+  - Monsters have more attack damage.
+  - §cConfigurable for each monster.
+  - §cNot supported in 1.8
+TANKY_MONSTERS:
+  name: Tanky Monsters
+  lore:
+  - Monsters take less damage.
+  - §cConfigurable for each monster.
+BLEEDING:
+  name: Bleeding
+  lore:
+  - 'Players have a #chance-percent#% chance to bleed when being damaged.'
+  - Bleeding disables health saturation regen.
+  - 'Also deals #damage# every 3 seconds.'
+  - Can be stoped by using a bandage.
+INFECTION:
+  name: Infection
+  lore:
+  - 'Zombies have a #chance-percent#% chance to infect players.'
+  - 'Gives nausea and deals #damage# damage every 3 seconds.'
+  - Can be stoped using a Strange Brew.
+  - Players also get infected when hitting a zombie bare hands.
+  - Players can infect other players when hitting them.
+ARROW_SLOW:
+  name: Arrow Slow
+  lore:
+  - Players hit by arrows get
+  - 'slowed down for #slow-duration# seconds.'
+SHOCKING_SKELETON_ARROWS:
+  name: Shocking Skeleton Arrows
+  lore:
+  - Skeleton arrows shock
+  - 'players for #shock-duration# seconds.'
+SILVERFISHES_SUMMON:
+  name: Silverfishes Summon
+  lore:
+  - 'Zombies have #chance-percent#% chance to summon'
+  - 'from #min# to #max# silverfishes when dying.'
+ARMOR_WEIGHT:
+  name: Armor Weight
+  lore:
+  - Players walk slower when wearing
+  - iron, gold or diamond armor sets.
+  - '§cWarning: uncompatible with'
+  - §cMS plugins and commands (/speed).
+HUNGER_NAUSEA:
+  name: Hunger Nausea
+  lore:
+  - Players get permanent nausea when hungry.
+CREEPER_REVENGE:
+  name: Creeper Revenge
+  lore:
+  - 'Creepers have a #chance-percent#% chance to'
+  - cause an explosion when dying.
+FALL_STUN:
+  name: Fall Stun
+  lore:
+  - High falls cause players to be highly
+  - slowed (III) for a few seconds. The
+  - higher the fall was, the longer it will last.
+LEAPING_SPIDERS:
+  name: Leaping Spiders
+  lore:
+  - Spiders can powerfuly leap on players.
+ADVANCED_PLAYER_DROPS:
+  name: Advanced Player Drops
+  lore:
+  - Players drop a skull, some bones and human
+  - flesh when dying. Human flesh can be cooked.
+STONE_STIFFNESS:
+  name: Stone Stiffness
+  lore:
+  - 'Players take #damage# damage when punching stone.'
+WITCH_SCROLLS:
+  name: Witch Scrolls
+  lore:
+  - 'Witches have a #chance-percent#% chance to block an'
+  - incoming damage thanks to a magic shield.
+  - ''
+  - Witches can also cast dark magic runes
+  - 'that deal #damage# to hit players,'
+  - 'slowing them down (II) for #slow-duration# seconds.'
+EVERBURNING_BLAZES:
+  name: Everburning Blazes
+  lore:
+  - Blazes summon beams of
+  - fire that ignite hit players.
+  - 'Lasts #burn-duration# seconds.'
+ELECTRICITY_SHOCK:
+  name: Electricity Shock
+  lore:
+  - 'Walking on powered redstone deals #damage# damage.'
+  - Can happen every 3 seconds.
+  - Works on wires, torches, repeaters and comparators.
+NETHER_SHIELD:
+  name: Nether Shield
+  lore:
+  - Magma cubes, pigmen & blazes have a
+  - '#chance-percent#% chance to block player attacks'
+  - thanks to a magical shield.
+  - 'It reflects #dmg-reflection-percent#% damage to the'
+  - 'sender and ignites him for #burn-duration#'
+  - seconds, while knocking him back.
+UNDEAD_RAGE:
+  name: Undead Rage
+  lore:
+  - Whenever a (pig) zombie takes
+  - damage, it gets angry and gains
+  - 'Strength and Speed II for #rage-duration# seconds.'
+BONE_GRENADES:
+  name: Bone Grenades
+  lore:
+  - Skeletons can throw bone grenades instead of arrows.
+  - 'Has a #chance-percent#% chance to occur.'
+  - It explodes when touching the ground,
+  - 'dealing #damage# damage to nearby players'
+  - while knocking them back.
+POISONED_SLIMES:
+  name: Poisoned Slimes
+  lore:
+  - 'When hitting a slime, players have a #chance-percent#%'
+  - 'chance to get poisoned for #duration# seconds.'
+  - 'Potion effect amplifier: #amplifier#.'
+ANGRY_SPIDERS:
+  name: Angry Spiders
+  lore:
+  - Spiders can throw cobweb at players.
+  - 'It deals #damage# damage to hit players,'
+  - 'slowing (#amplifier#) them down for #duration# seconds.'
+ENDER_POWER:
+  name: Ender Power
+  lore:
+  - 'Players have a #chance-percent#% chance to get'
+  - 'blinded for #duration# seconds when hitting'
+  - endermen, endermites, shulkers and dragons.
+UNDEAD_GUNNERS:
+  name: Undead Gunners
+  lore:
+  - Zombies named 'Undead Gunner' become gunners.
+  - Gunners can cast 1 spell!
+  - 'Rocket: #damage# damage, AoE'
+REALISTIC_PICKUP:
+  name: Realistic Pickup
+  lore:
+  - Players need to crouch near an
+  - item and look down in order to pick
+  - it up. Players also get briefly slowed.
+BONE_WIZARDS:
+  name: Bone Wizards
+  lore:
+  - Skeletons named 'Bone Wizards' become mages.
+  - 'Wizards can cast 2 spells:'
+  - 'Fireball: #fireball-damage# damage, #fireball-duration# sec. burn'
+  - 'Frost Curse: #frost-curse-damage# damage, #frost-curse-duration# sec. slow (#frost-curse-amplifier#)'
+FREDDY:
+  name: Freddy
+  lore:
+  - Each time a player wakes up, he has
+  - 'a #chance-percent#% chance to summon Freddy.'
+DANGEROUS_COAL:
+  name: Dangerous Coal
+  lore:
+  - 'When mining coal, players have a #chance-percent#%'
+  - chance to pierce a gas pocket
+  - trapped in the rocks. It causes a
+  - 'explosion which radius is #radius# blocks.'
+WITHER_RUSH:
+  name: Wither Rush
+  lore:
+  - Wither Skeletons can blink to players,
+  - 'dealing them #damage# damage.'
+MOB_CRITICAL_STRIKES:
+  name: Mob Critical Strikes
+  lore:
+  - Monsters can deal critical strikes,
+  - 'dealing #damage-percent#% §nadditional§7 damage.'
+  - §cCrit Chance configurable for each monster.
+THIEF_SLIMES:
+  name: Thief Slimes
+  lore:
+  - 'Slimes have #chance-percent#% to steal levels'
+  - from players when hitting them.
+  - 'Slimes can steal #exp# EXP.'
+WITHER_MACHINEGUN:
+  name: Wither Machinegun
+  lore:
+  - Wither Skeletons can throw coal
+  - 'at you, each dealing #damage# damage.'
+SNOW_SLOW:
+  name: Snow Slow
+  lore:
+  - Players who are not wearing iron,
+  - gold or diamond boots are permanently
+  - slowed when walking on snow.
+BLOOD_MOON:
+  name: Blood Moon
+  lore:
+  - 'When night comes, it has a #chance#% chance to turn red...'
+  - 'Players take #damage-percent#% more damage and get'
+  - 'slowed for #slow-duration#s whenever taking damage.'
+  - ''
+  - Only zombies can spawn during this night
+  - 'and will have Speed #speed#, Strength #increase-damage#'
+  - 'and Resistance #damage-resistance#.'
+THUNDERSTORM:
+  name: Thunderstorm
+  lore:
+  - 'Each storm has a #chance#% chance to become a thunderstorm.'
+  - 'Lightning strikes deal #damage-percent#% more AoE damage'
+  - and appear way more frequently around players!!
+  - '&c[COMING SOON]'

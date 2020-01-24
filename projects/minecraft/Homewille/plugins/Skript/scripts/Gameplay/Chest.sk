@@ -1,0 +1,148 @@
+# aliases:
+#   ordinary airdrop = minecraft:white_shulker_box
+#   rare airdrop = minecraft:lime_shulker_box
+#   very rare airdrop = minecraft:light_blue_shulker_box
+#   mythic airdrop = minecraft:magenta_shulker_box
+
+on place:
+  if "%event-block%" contains "chest" or "shulker":
+    set {chests::%location of event-block%::chest} to true
+
+on break:
+  if {chests::%location of event-block%::chest} is true:
+    delete {chests::%location of event-block%::chest}
+
+on right click:
+  if "%event-block%" contains "chest" or "shulker":
+    if {chests::%location of event-block%::chest} is not set:
+      set {_chest} to event-block
+
+      set {_updated} to {chests::%location of event-block%::updated}
+      set {_now} to convert date now to unix date
+      if {_updated} is not set:
+        set {_updated} to 0
+
+      if {_now} >= {_updated}:
+      # if true:
+        # Сундук не обновлялся...
+        # Обновляем
+
+        set {_items} to random integer between 12 and 24
+
+        # ----
+        # ЕДА
+        # ----
+        add apple named "&9☕ &fЯблоко" with lore "&7~ Съедобное яблоко, очень полезное для организма.", "&7Как минимум, это хоть что-то..." to {_items::food::*}
+        add melon named "&9☕ &fАрбуз" with lore "&7~ Немного протухший, но всё ещё арбуз. Очень", "&7мало восстанавливает, но тем не менее..." to {_items::food::*}
+        add cookie named "&9☕ &fПеченье" with lore "&7~ Сделанное какой-то бабушкой, которая уже мертва...", "&7Довольно-таки вкусно, сохранилось на удивление очень", "&7хорошо..." to {_items::food::*}
+        add rotten flesh to {_items::food::*}
+        add carrot named "&9☕ &fМорковь" with lore "&7~ Самый любимый предмет девушек и маленьких кроликов.", "&7Одни страшные и уродливые, а другие мягкие и пушистые" to {_items::food::*}
+        add potato named "&9☕ &fКартошка" with lore "&7~ На вид нормальная картошка, ничего странного", "&7в ней нету. Привезённая прямиком из Парадайса, очень вкусная", "&7и полезная! Вот бы приготовить её..." to {_items::food::*}
+        add poisonous potato named "&9☕ &fКартошка" with lore "&7~ На вид не очень свежая картошка... Ну, другого", "&7выбора нету, не так ли?" to {_items::food::*}
+        # add beetroot named "&9☕ &fСвёкла" with lore "&7~ "
+        add porkchop named "&9☕ &fСырая свинина" with lore "&7~ А когда-то это была живая и здоровая свенюшка...", "&7Жаль, что это не та одноклассница, которая всем", "&7отсасывала, а мне нет..." to {_items::food::*}
+        add mutton named "&9☕ &fСырая баранина" with lore "&7~ Ну, это тоже когда-то бегало..." to {_items::food::*}
+
+        chance of 4%:
+          set {_rnd} to random integer between 1 and 3
+          loop {_rnd} times:
+            set {_item} to random element of {_items::food::*}
+            set {_number} to random integer between 1 and 2
+
+            add {_number} of {_item} to {_chest::*}
+
+        # ---------
+        # МАТЕРИАЛЫ
+        # ---------
+        chance of 22%:
+          if {_items} > 0:
+            set {_stick} to stick named "&9⚀ &fПалка" with lore "&7~ Очень много вы ею не сделаете. Ну, сможете сделать", "&7какую-то заточку ну или маленький топорик,", "&7ну и на этом почти что всё..."
+            set {_rnd} to random integer between 1 and 5
+
+            add {_rnd} of {_stick} to {_chest::*}
+
+            reduce {_items} by 1
+        chance of 18%:
+          if {_items} > 0:
+            set {_flint} to flint named "&9⚀ &fКремень" with lore "&7~ Самый обычный материал, используется для создания", "&7первоначальных инструментов для подальшего выживания...", "&7Смотрите в «Книге Выжившего»"
+            set {_rnd} to random integer between 1 and 2
+            
+            add {_rnd} of {_flint} to {_chest::*}
+
+            reduce {_items} by 1
+        chance of 22%:
+          if {_items} > 0:
+            set {_stone} to firework charge named "&9⚀ &fКамень" with lore "&7~ Казалось бы, обычный камешек, но его польза", "&7очень высока в этом суровом мире."
+            add {_stone} to {_chest::*}
+
+            reduce {_items} by 1
+        chance of 5%:
+          if {_items} > 0:
+            set {_iron::1} to iron nugget named "&9⚀ &fКусочек железа" with lore "&7~ Довольно-таки часто используется в создании оружия", "&7и брони. И обе эти вещи являются почти что необходимыми", "&7в этом мире!"
+            
+            add {_iron::1} to {_chest::*}
+
+            reduce {_items} by 1
+
+        chance of 35%:
+          if {_items} > 0:
+            set {_string} to string named "&9⚀ &fНить" with lore "&7~ Повеситься на ней у вас не получится, но зато", "&7получится сделать совсем немного интересных вещей!"
+            set {_rnd} to random integer between 2 and 5
+
+            add {_rnd} of {_string} to {_chest::*}
+
+            reduce {_items} by 1
+        chance of 18%:
+          if {_items} > 0:
+            set {_leather} to leather named "&9⚁ &fКожа" with lore "&7~ Неизвестно, откуда её содрали. Может с коровы,", "&7может с человека, а может парочка зомби", "&7решила устроить БДСМ сессию."
+            set {_rnd} to random integer between 1 and 2
+
+            add {_rnd} of {_leather} to {_chest::*}
+
+            reduce {_items} by 1
+        chance of 18%:
+          if {_items} > 0:
+            set {_brick} to brick named "&9⚁ &fКирпич" with lore "&7~ Очень полезный ингридиент. Частично используется", "&7изготовлении патронов малого калибра, а так же", "&7используется для постройки оборонительныъ сооружений."
+            set {_rnd} to random integer between 2 and 4
+
+            add {_rnd} of {_brick} to {_chest::*}
+
+            reduce {_items} by 1
+        chance of 5%:
+          if {_items} > 0:
+            set {_dye} to brown dye named "&9⚃ &fКусочек меди" with lore "&7~ Сплав этого материала очень полезен в изготовлении", "&7патрон малого калибра. А как вы знаете, патроны очень", "&7ценятся в это время!"
+            
+            add {_dye} to {_chest::*}
+
+            reduce {_items} by 1
+        chance of 4%:
+          if {_items} > 0:
+            set {_gunpowder} to gunpowder named "&9⚃ &fПорох" with lore "&7~ Любимый порошок американских школьников.", "&7Используется для создания патрон и взрыв." and "&7веществ."
+
+            add {_gunpowder} to {_chest::*}
+
+            reduce {_items} by 1
+
+        set {_loop} to 0
+        loop 26 times:
+          add {_loop} to {_slots::*}
+          add 1 to {_loop}
+        
+        set {_items} to random integer between 1 and 5
+
+
+
+        # Обновляем...
+          # Заполняем сундук
+
+        loop {_chest::*}:
+          set {_slot} to random element of {_slots::*}
+          remove {_slot} from {_slots::*}
+
+          set slot {_slot} of {_chest}'s inventory to loop-value
+
+          # Ставим кое-какое значение...
+        set {_now} to convert date now to unix date
+        add 180 to {_now}
+        
+        set {chests::%location of event-block%::updated} to {_now}

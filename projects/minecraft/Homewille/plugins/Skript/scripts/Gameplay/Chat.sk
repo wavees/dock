@@ -1,0 +1,411 @@
+command roll:
+  trigger:
+    set {_name} to {card::%player%::name}
+    if {_name} is not set:
+      set {_name} to "*%player%"
+ 
+    set {_number} to random integer between 0 and 100
+    loop all players in radius 15 around location of player:
+      send "&e⚄ &f%{_name}% &7(%player%) кинул кубик действий и ему выпало &e%{_number}% из 100" to loop-player
+
+command card [<text>]:
+  trigger:
+    if arg 1 is not set:
+      set {_card::name} to {card::%player%::name}
+      if {_card::name} is not set:
+        set {_card::name} to "*%player%"
+      
+      set {_card::gender} to {card::%player%::gender}
+      if {_card::gender} is not set:
+        set {_card::gender} to "Мужской"
+      
+      send "&9☃ &fКарточка игрока &9@&f%player%"
+      send "Имя: &7%{_card::name}%"
+      send "  &7Используйте /card name что бы изменить"
+      send "Пол: &7%{_card::gender}%"
+      send "  &7Используйте /card gender что бы изменить."
+
+    else if arg 1 is "name":
+      set {_waiting} to true
+
+      if {card::%player%::worker} is set:
+        set {card::%player%::worker} to "stop"
+        wait 1 tick
+      
+      delete {card::%player%::worker}
+      while {_waiting} is true:
+        if player is offline:
+          delete {card::%player%::worker}
+          
+          delete {temp::%player%::chat::input}
+          delete {temp::%player%::chat::output} 
+          
+          stop
+        if {card::%player%::worker} is not set:
+          set {card::%player%::worker} to true
+        if {card::%player%::worker} is "stop":
+          delete {card::%player%::worker}
+          
+          delete {temp::%player%::chat::input}
+          delete {temp::%player%::chat::output} 
+          
+          stop
+        
+        send title "" with subtitle "&9¹ &fНапишите ваше имя в чат" to player for 2 seconds with 0 ticks fade in and 0 ticks fade out
+
+        if {temp::%player%::chat::input} is not set:
+          set {temp::%player%::chat::input} to true
+        if {temp::%player%::chat::output} is set:
+          set {_output} to {temp::%player%::chat::output}
+          delete {temp::%player%::chat::output}
+
+          if {_output} contains "отмена":
+            send title "&c⚠ &fОтменено" with subtitle "&7~ Вы не успели поменять имени" to player for 2 seconds with 0 ticks fade in and 1 second fade out
+
+            delete {card::%player%::worker}
+            delete {temp::%player%::chat::input}
+            delete {temp::%player%::chat::output} 
+            stop
+          else:
+            set {card::%player%::name} to {_output}
+            send title "&a✔ &fНовое имя: %{_output}%" with subtitle "&7~ У вас новое имя, ура" to player for 2 seconds with 0 ticks fade in and 1 second fade out
+            
+            execute player command "/card"
+
+            delete {card::%player%::worker}
+            delete {temp::%player%::chat::input}
+            delete {temp::%player%::chat::output} 
+            
+            stop
+        wait 1 tick
+
+command uuid [<player>]:
+  trigger:
+    send arg-1's uuid
+
+on chat:
+  cancel event
+  if {temp::%player%::chat::input} is set:
+    stop
+  else:
+    if {%player%::chat} is 1:
+      if message contains "((":
+        set {_prep::*} to message split at "(("
+        loop {_prep::*}:
+          if loop-value contains "))":
+            set {_loop-prep::*} to loop-value split at "))"
+            if {_loop-prep::1} is set:
+              add "((%{_loop-prep::1}%))" to {_messages::nonrp::*}
+      set {_message} to message
+      loop {_messages::nonrp::*}:
+        replace all loop-value in {_message} with "&7%loop-value%&f"
+
+      set {_card::name} to {card::%player%::name}
+      if {_card::name} is not set:
+        set {_card::name} to "*%player%"
+      if message starts with ">":
+        # Крик
+        set {_message} to subtext of {_message} from characters 2 to (length of {_message})
+        loop all players in radius 40 blocks around player:
+          delete {_block}
+
+          set {_loc1} to location of loop-player
+          add 1 to y coordinate of {_loc1}
+
+          set {_loc2} to location of player
+          add 1 to y coordinate of {_loc2}
+
+          loop all blocks between {_loc1} and {_loc2}:
+            if loop-block isn't air or glass or carpet or grass or leaves or flowers or any slab:
+              add 1 to {_block}
+          if {_block} > 4:
+            set {_block} to true
+          if {_block} is not true:
+            # {cards::%player%::%{_tmp::target}%::know::name}
+
+            set {_card::gender} to {card::%player%::gender}
+            if {_card::gender} is not set:
+              set {_card::gender} to "мужской"
+
+            set {_suffix::1} to ("а") if {_card::gender} contains "жен" else ("")
+            set {_suffix::2} to ("ка") if {_card::gender} contains "жен" else ("ец")
+
+            set {_word::1} to {_card::name}
+
+            if "%loop-player%" is "%player%":
+              set {_word::1} to "&6%{_card::name}%"
+            send "&7%{_word::1}% &cкрикнул%{_suffix::1}%&f: &f%coloured {_message}%" to loop-player
+      else if message starts with "<":
+        # Шёпотом
+        set {_message} to subtext of {_message} from characters 2 to (length of {_message})
+        loop all players in radius 3 blocks around player:
+          delete {_block}
+
+          set {_loc1} to location of loop-player
+          add 1 to y coordinate of {_loc1}
+
+          set {_loc2} to location of player
+          add 1 to y coordinate of {_loc2}
+
+          loop all blocks between {_loc1} and {_loc2}:
+            if loop-block isn't air or glass or carpet or grass or leaves or flowers or any slab:
+              set {_block} to true
+          if {_block} is not true:
+            set {_card::gender} to {card::%player%::gender}
+            if {_card::gender} is not set:
+              set {_card::gender} to "мужской"
+            set {_suffix::1} to ("а") if {_card::gender} contains "жен" else ("")
+            set {_suffix::2} to ("ка") if {_card::gender} contains "жен" else ("ец")
+
+            set {_word::1} to {_card::name}
+
+            if "%loop-player%" is "%player%":
+              set {_word::1} to "&6%{_card::name}%"
+            send "&7%{_word::1}% &9прошептал%{_suffix::1}%&f: &f%coloured {_message}%" to loop-player
+      else if message starts with "*":
+        # Действие
+        set {_message} to subtext of {_message} from characters 2 to (length of {_message})
+        loop all players in radius 25 around player:
+
+          set {_card::gender} to {card::%player%::gender}
+          if {_card::gender} is not set:
+            set {_card::gender} to "мужской"
+          set {_suffix::1} to ("ка") if {_card::gender} contains "жен" else ("ец")
+          
+          set {_word::1} to {_card::name}
+
+          if "%loop-player%" is "%player%":
+            set {_word::1} to "%{_card::name}%"
+          send "&e%{_word::1}% &e%coloured {_message}%" to loop-player
+        checkCommand({_message}, player)
+      else if message starts with "!":
+        if {temp::%player%::chat::input::v2} is true:
+          delete {temp::%player%::chat::input::v2}
+          set {temp::%player%::chat::output::v2} to message
+          stop
+      else:
+        loop all players in radius 20 blocks around player:
+          delete {_block}
+
+          set {_loc1} to location of loop-player
+          add 1 to y coordinate of {_loc1}
+
+          set {_loc2} to location of player
+          add 1 to y coordinate of {_loc2}
+          loop blocks between block at {_loc1} and block at {_loc2}:
+            if loop-block isn't air or glass or carpet or grass or leaves or flowers or any slab:
+              add 1 to {_block}
+          if {_block} > 3:
+            set {_block} to true
+          if {_block} is not true:
+            set {_card::gender} to {card::%player%::gender}
+            if {_card::gender} is not set:
+              set {_card::gender} to "мужской"
+            set {_suffix::1} to ("ка") if {_card::gender} contains "жен" else ("ец")
+
+            set {_word::1} to {_card::name}
+
+            if "%loop-player%" is "%player%":
+              set {_word::1} to "&6%{_card::name}%"
+            send "&7%{_word::1}%: &f%coloured {_message}%" to loop-player
+      add coloured message to {%player%::VisualChat::*}
+    else:
+      set {_card::name} to {card::%player%::name}
+      if {_card::name} is not set:
+        set {_card::name} to "*%player%"
+
+      if {temp::%player%::chat::input} is set:
+        stop
+      loop all players:
+        if {temp::%loop-player%::blockAll} is not set: 
+          if getSetting(loop-player, "chat.hideGlobal") is "false":
+            send "&9[OOC] &f%player% &7(%{_card::name}%&7)&f: %message%" to loop-player
+    
+on quit:
+  delete {%player%::VisualChat::*}
+  delete {%player%::VisualMessage}
+
+function checkCommand(command: string, player: player):
+  # Время..
+  # set {_time::*} to "время" or "часы" or "час" or "времени"
+  if {_command} contains "время" or "часы" or "час" or "времени":
+    set {_time} to {data::islands::time::visual}
+    set {_prep::*} to {_time} split at ":"
+    set {_hours} to {_prep::1} parsed as number
+    set {_minutes} to {_prep::2} parsed as number
+    if {_hours} is not set:
+      set {_hours} to 0
+    if {_minutes} is not set:
+      set {_minutes} to 0
+
+    if {_hours} >= 0:
+      if {_hours} <= 4:
+        if {_minutes} <= 25:
+          set {_symbol} to "&9●"
+          set {_color} to "&9"
+        else:
+          set {_symbol} to "&e⚙"
+          set {_color} to "&e"
+      else if {_hours} < 9:
+        set {_symbol} to "&e⚙"
+        set {_color} to "&e"
+      else if {_hours} < 17:
+        set {_symbol} to "&6✹"
+        set {_color} to "&6"
+      else if {_hours} > 17:
+        set {_symbol} to "&b○"
+        set {_color} to "&b"
+        if {_hours} > 20:
+          set {_symbol} to "&9●"
+          set {_color} to "&9"
+
+    if {_symbol} is not set:
+      set {_symbol} to "&c¿"
+    if {_color} is not set:
+      set {_color} to "&c"
+
+    set {_date} to getDate(1)
+    # Отправляем время игроку...
+    send "%{_color}%* &fВремя на часах:" to {_player}
+    send "%{_symbol}% %{data::islands::time::visual}%, %{_date}% %{data::islands::time::year}% г." to {_player}
+
+every 1 tick:
+  loop all players:
+    set {_player} to loop-player
+
+    if {chat::%{_player}%::last} is set:
+      reduce {chat::%{_player}%::last} by 0.05
+      if {chat::%{_player}%::last} < 0:
+        delete {chat::%{_player}%::last}
+    # delete {%{_player}%::VisualChat::*}
+    if size of {%{_player}%::VisualChat::*} >= 1:
+      if {%{_player}%::VisualMessage} is not set:
+        loop {%{_player}%::VisualChat::*}:
+          set {%{_player}%::VisualMessage} to true
+          set {_message} to loop-value-2
+
+          set {_number::*} to {_message} split at ""
+          set {_number} to size of {_number::*}
+
+          if size of {_number::*} >= 35:
+            remove {_message} from {%{_player}%::VisualChat::*}
+            set {_message1} to first 35 characters of {_message}
+            set {_number::*} to {_message1} split at ""
+            set {_number} to size of {_number::*}
+            set {_message2} to subtext of {_message} from characters 35 to (length of {_message})
+
+            if {_message} starts with "*":
+              add "*...%{_message2}%" to {%{_player}%::VisualChat::*}
+            else if {_message} starts with ">":
+              add ">...%{_message2}%" to {%{_player}%::VisualChat::*}
+            else if {_message} starts with "<":
+              add 1 to {_nothgin}
+            else:
+              add "...%{_message2}%" to {%{_player}%::VisualChat::*}
+            set {_message} to "%{_message1}%..."
+          set {_time} to "%{_number}*0.1% seconds" parsed as timespan
+
+          remove {_message} from {%{_player}%::VisualChat::*}
+          # Звуки...
+          play sound "entity.villager.yes" with volume 2 with pitch 1 at loop-player
+          # Спавним...
+          if {_message} starts with "*":
+            set {chat::%{_player}%::last} to 2
+
+            set {_card::name} to {card::%loop-player%::name}
+            if {_card::name} is not set:
+              set {_card::name} to "*%loop-player%"
+            set {_message} to subtext of {_message} from characters 2 to (length of {_message})
+            set {_message} to "&e%{_message}%"
+          else if {_message} starts with ">":
+            set {_message} to subtext of {_message} from characters 2 to (length of {_message})
+
+            set {_card::gender} to {card::%loop-player%::gender}
+            if {_card::gender} is not set:
+              set {_card::gender} to "мужской"
+            if {_card::gender} contains "жен":
+              set {_message} to "&cКрикнула: &f%{_message}%"
+            else:
+              set {_message} to "&cКрикнул: &f%{_message}%"
+          else if {_message} starts with "<":
+            delete {%{_player}%::VisualMessage}
+            stop
+          else:
+            set {_card::gender} to {card::%loop-player%::gender}
+            if {_card::gender} is not set:
+              set {_card::gender} to "мужской"
+            if {_card::gender} contains "жен":
+              set {_message} to "&6Сказала: &f%{_message}%"
+            else:
+              set {_message} to "&6Сказал: &f%{_message}%"
+          create new hologram with lines "%{_message}%" that follows loop-player with offset 2.4 blocks above and store it in the variable {_holo}
+
+          wait {_time}
+          # Удаляем...
+          delete hologram {_holo}
+          delete {%{_player}%::VisualMessage}
+
+command shout [<text>]:
+  aliases: s
+  trigger:
+    if arg 1 is set:
+      set {_card::name} to {card::%player%::name}
+      if {_card::name} is not set:
+        set {_card::name} to "*%player%"
+      set {_message} to arg 1
+      loop all players in radius 40 blocks around player:
+        set {_card::gender} to {card::%player%::gender}
+        if {_card::gender} is not set:
+          set {_card::gender} to "мужской"
+        if {_card::gender} contains "жен": 
+          send "&7%{_card::name}% &cкрикнула&f: &f%coloured {_message}%" to loop-player
+        else:
+          send "&7%{_card::name}% &cкрикнул&f: &f%coloured {_message}%" to loop-player
+      add coloured ">%{_message}%" to {%player%::VisualChat::*} 
+    else:
+      send "&c⚠ &fВам нужно вписать какой-то текст, что бы выкрикнуть его."
+
+command whisper [<text>]:
+  aliases: w
+  trigger:
+    if arg 1 is set:
+      set {_message} to arg 1
+      set {_card::name} to {card::%player%::name}
+      if {_card::name} is not set:
+        set {_card::name} to "*%player%"
+      loop all players in radius 3 blocks around player:
+        set {_card::gender} to {card::%player%::gender}
+        if {_card::gender} is not set:
+          set {_card::gender} to "мужской"
+        if {_card::gender} contains "жен":
+          send "&7%{_card::name}% &9прошептала&f: &f%coloured {_message}%" to loop-player
+        else:
+          send "&7%{_card::name}% &9прошептала&f: &f%coloured {_message}%" to loop-player
+        add coloured "<%{_message}%" to {%player%::VisualChat::*} 
+    else:
+      send "&c⚠ &fВам нужно вписать какой-то текст, что бы прошептать его."
+command minecraft:me [<text>]:
+  trigger:
+    execute player command "/me %arg 1%"
+
+command /me [<text>]:
+  trigger:
+    if arg 1 is set:
+      set {_card::name} to {card::%player%::name}
+      if {_card::name} is not set:
+        set {_card::name} to "*%player%"
+      loop all players in radius 25 around player:
+        send "&e%{_card::name}% &e%coloured arg 1%" to loop-player
+      add coloured "*%arg 1%" to {%player%::VisualChat::*} 
+    else:
+      send "&c⚠ &fВам нужно вписать действие, которое вы хотите сделать."
+
+command rp:
+  aliases: ooc, chat, channel
+  trigger:
+    if {%player%::chat} is 1:
+      set {%player%::chat} to 2
+      send "&a➲ &fВы перешли в OOC &7(Out Of Character)&f чат."
+    else:
+      set {%player%::chat} to 1
+      send "&a➲ &fВы перешли в RP &7(Role Play)&f чат."

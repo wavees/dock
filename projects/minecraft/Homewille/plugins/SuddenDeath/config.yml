@@ -1,0 +1,148 @@
+disable-difficulties: false
+default-difficulty: DIFFICULT
+update-notify: true
+quick-mobs:
+- world_the_end
+- world_nether
+force-of-the-undead:
+- world_the_end
+- world_nether
+- world
+tanky-monsters:
+- world
+- world_the_end
+- world_nether
+bleeding:
+- world_the_end
+- world_nether
+infection:
+- world_the_end
+- world_nether
+arrow-slow:
+- world
+- world_the_end
+- world_nether
+shocking-skeleton-arrows:
+- world
+- world_the_end
+- world_nether
+silverfishes-summon:
+- world_the_end
+- world_nether
+armor-weight:
+- world
+- world_the_end
+- world_nether
+hunger-nausea:
+- world
+- world_the_end
+- world_nether
+creeper-revenge:
+- world_the_end
+- world_nether
+fall-stun:
+- world
+- world_the_end
+- world_nether
+leaping-spiders:
+- world
+- world_the_end
+- world_nether
+advanced-player-drops:
+- world
+- world_the_end
+- world_nether
+stone-stiffness:
+- world_the_end
+- world_nether
+witch-scrolls:
+- world_the_end
+- world_nether
+everburning-blazes:
+- world_the_end
+- world_nether
+electricity-shock:
+- world_the_end
+- world_nether
+nether-shield:
+- world_the_end
+- world_nether
+undead-rage:
+- world
+- world_the_end
+- world_nether
+bone-grenades:
+- world
+- world_the_end
+- world_nether
+poisoned-slimes:
+- world_the_end
+- world_nether
+angry-spiders:
+- world
+- world_the_end
+- world_nether
+ender-power:
+- world_the_end
+- world_nether
+undead-gunners:
+- world
+- world_the_end
+- world_nether
+realistic-pickup:
+- world_the_end
+- world_nether
+bone-wizards:
+- world
+- world_the_end
+- world_nether
+freddy:
+- world_the_end
+- world_nether
+- world
+dangerous-coal:
+- world_the_end
+- world_nether
+wither-rush:
+- world
+- world_the_end
+- world_nether
+mob-critical-strikes:
+- world_the_end
+- world_nether
+thief-slimes:
+- world_the_end
+- world_nether
+wither-machinegun:
+- world
+- world_the_end
+- world_nether
+snow-slow:
+- world
+- world_the_end
+- world_nether
+blood-moon:
+- world_the_end
+- world_nether
+- world
+thunderstorm:
+- world
+- world_the_end
+- world_nether
+default-spawn-coef:
+  ZOMBIE: 20
+  SKELETON: 20
+  CREEPER: 20
+  SPIDER: 20
+  SLIME: 20
+  GHAST: 20
+  ZOMBIE_PIGMAN: 20
+  ENDERMAN: 20
+  CAVE_SPIDER: 20
+  SILVERFISH: 20
+  BLAZE: 20
+  MAGMA_CUBE: 20
+  BAT: 20
+  WITCH: 20
+  ENDERMITE: 20
+  GUARDIAN: 20

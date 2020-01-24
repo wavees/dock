@@ -1,0 +1,509 @@
+options:
+  settings: /home/Addons/Auth/settings.yml
+
+  users: /home/Database/users/
+
+on quit:
+  set quit message to ""
+  set {temp::%player%::location} to location of player
+
+on join:
+  set join message to ""
+  wait 1 tick
+  #
+  # Проверяем ип-адресс игрока, и
+  # идём дальше..
+  set {_settings::ip} to player's ip
+  set {_settings::uuid} to player's uuid
+
+    # Подгружаем файл.
+  set {_file} to "{@users}/%{_settings::uuid}%.yml"
+  set {_random} to random integer between 000 and 999
+
+  load yaml "%{_file}%" as "%{_file}%.secure.%{_random}%"
+
+    # Берём нужные нам значения...
+  set {_data::ip} to skript-yaml value "player.lastIp" from "%{_file}%.secure.%{_random}%"
+  set {_data::expired} to skript-yaml value "player.lastLogin" from "%{_file}%.secure.%{_random}%"
+  set {_data::password} to skript-yaml value "player.password" from "%{_file}%.secure.%{_random}%"
+  # hashed with SHA-256
+
+  unload yaml "%{_file}%.secure.%{_random}%"
+
+  if {_settings::ip} isn't {_data::ip}:
+    # Начинаем процесс регистрации/авторизации пользователя
+    # player.setViewDistance(8)
+    auth(player)
+
+  else:
+    # Телепортируем игрока на спавн...
+
+    if {temp::%player%::location} is set:
+      teleport player to {temp::%player%::location}
+      stop
+    else:
+      set {_random} to getRandomLocation()
+      teleport player to {_random}
+
+        # Звуки
+    play sound "block.enchantment_table.use" with volume 2 with pitch 0.5 at player for player
+    #     # Эффекты
+
+command auth [<text>]:
+  trigger:
+    if executor is op:
+      if arg 1 is set:
+        if arg 1 is "setLogin":
+          # Ставим позицию авторизации
+            # Подгружаем файлы
+          set {_file} to "{@settings}"
+          set {_random} to random integer between 000 and 999
+
+          load yaml "%{_file}%" as "%{_file}%.secure.%{_random}%"
+
+          set {_settings::yaw} to player's yaw
+          set {_settings::pitch} to player's pitch
+          set {_settings::world} to "%player's world%"
+          set {_settings::location} to player's location
+
+          set skript-yaml value "login.location" from "%{_file}%.secure.%{_random}%" to "%x coordinate of {_settings::location}%, %y coordinate of {_settings::location}%, %z coordinate of {_settings::location}%"
+          set skript-yaml value "login.world" from "%{_file}%.secure.%{_random}%" to {_settings::world}
+          set skript-yaml value "login.yaw" from "%{_file}%.secure.%{_random}%" to {_settings::yaw}
+          set skript-yaml value "login.pitch" from "%{_file}%.secure.%{_random}%" to {_settings::pitch}
+
+          send title "&a✔ &fУспешно!" with subtitle "&7Вы установили позицию для сервера авторизации." to player for 4 seconds with 1 second fade in and 1 second fade out
+          play sound "note.block.bell" with volume 1 with pitch 1.5 at player for player
+
+          save yaml "%{_file}%.secure.%{_random}%"
+        else if arg 1 is "setSpawn":
+          # Ставим позицию спавна
+            # Подгружаем файлы
+          set {_file} to "{@settings}"
+          set {_random} to random integer between 000 and 999
+
+          load yaml "%{_file}%" as "%{_file}%.secure.%{_random}%"
+
+          set {_settings::yaw} to player's yaw
+          set {_settings::pitch} to player's pitch
+          set {_settings::world} to "%player's world%"
+          set {_settings::location} to player's location
+
+          set skript-yaml value "spawn.location" from "%{_file}%.secure.%{_random}%" to "%x coordinate of {_settings::location}%, %y coordinate of {_settings::location}%, %z coordinate of {_settings::location}%"
+          set skript-yaml value "spawn.world" from "%{_file}%.secure.%{_random}%" to {_settings::world}
+          set skript-yaml value "spawn.yaw" from "%{_file}%.secure.%{_random}%" to {_settings::yaw}
+          set skript-yaml value "spawn.pitch" from "%{_file}%.secure.%{_random}%" to {_settings::pitch}
+
+          send title "&a✔ &fУспешно!" with subtitle "&7Вы установили позицию спавна." to player for 4 seconds with 1 second fade in and 1 second fade out
+          play sound "note.block.bell" with volume 1 with pitch 1.5 at player for player
+
+          save yaml "%{_file}%.secure.%{_random}%"
+        else if arg 1 is "addRnd":
+          set {_file} to "{@settings}"
+          set {_random} to random integer between 000 and 999
+
+          load yaml "%{_file}%" as "%{_random}%"
+
+          add "%x coordinate of player's location%, %y coordinate of player's location%, %z coordinate of player's location%" to skript-yaml list "location.list" from "%{_random}%"
+
+          send title "&a✔ &fПозиция добавленна" with subtitle "&7~ %x coordinate of player's location% %y coordinate of player's location% %z coordinate of player's location%" to player for 2 seconds
+
+          save yaml "%{_random}%"
+        else if arg 1 is "del":
+          delete {temp::%player%::location}
+        else:
+          send "&e⚠ &fКоманда не обнаружена. Используйте &9/&fauth - для получения помощи."
+          play sound "" with volume 2 with pitch 1 at player for player
+      else:
+        send ""
+        send "&9ℹ &fСуб-команды для команды &9/&fauth [<Текст>]"
+        send "  &9/&fauth setSpawn - Ставит позицию спавна."
+    else:
+      send "&c⚠ &fУ вас нету доступа к этой команде."
+      play sound "" with volume 2 with pitch 1 at player for player
+
+on damage:
+  if {temp::%victim%::blockAll} is set:
+    cancel event
+    delete {temp::%victim%::blockAll}
+
+# ---------------------------------
+#     FUNCTION AUTH(p: player)
+# Главная функция, которая отвечает
+# за авторизацию/регистрацию
+# пользователя.
+#
+# Возвращяет:
+# - число:
+#   1 - Если действие успешно.
+#   0 - Если что-то пошло не так
+
+function auth(player: player) :: number:
+  # Подготовка данных пользователя..
+  set {_settings::ip} to {_player}'s ip
+  set {_settings::uuid} to {_player}'s uuid
+
+    # Загружаем файл...
+  set {_file} to "{@users}/%{_settings::uuid}%.yml"
+  set {_random} to random integer between 000 and 999
+
+  load yaml "%{_file}%" as "%{_file}%.secure.%{_random}%"
+    # Подгружаем всё самое нужное.
+  # set {_data::ip} to skript-yaml value "player.lastIp" from "%{_file}%.secure.%{_random}%"
+  # set {_data::expired} to skript-yaml value "player.expired" from "%{_file}%.secure.%{_random}%"
+  set {_data::password} to skript-yaml value "player.password" from "%{_file}%.secure.%{_random}%"
+
+  #
+  #            Развилка:
+  # Авторизация   или   Регистрация
+
+  hide {_player} from all players
+  if {_data::password} is set:
+    # Авторизация
+    # ⬛
+      # Сообщение
+        # Отчистка чата
+    loop 60 times:
+      send "" to {_player}
+    send "&9⬛ &fЭтот аккаунт уже зарегистрирован на сервере." to {_player}
+    send "  &fТак что Вам стоит войти, используя тот пароль," to {_player}
+    send "  &fКоторый Вы создали при регистрации." to {_player}
+    send "" to {_player}
+      # Телепортация игра на позицию входа
+    set {_location} to getLoginPosition()
+    teleport {_player} to {_location}
+      # Звуки
+    play sound "block.end_portal_frame.fill" with volume 2 with pitch 1.5 at {_player} for {_player}
+
+    set {_running} to true
+    while {_running} is true:
+      if {_player} is offline:
+        delete {_running}
+        unload yaml "%{_file}%.secure.%{_random}%"
+        stop
+      # Визуал.
+      send action bar "&9➥ &fНапишите ваш пароль в чат." to {_player}
+
+      if {temp::%{_player}%::blockAll} is not set:
+        set {temp::%{_player}%::blockAll} to true
+
+      if {temp::%{_player}%::chat::input} is not set:
+        set {temp::%{_player}%::chat::input} to true
+      if {temp::%{_player}%::chat::output} is set:
+        set {_result} to {temp::%{_player}%::chat::output}
+        delete {temp::%{_player}%::chat::output}
+
+        # Проверка...
+        if "%{_result} hashed with sha-256%" is "%{_data::password}%":
+          # Пользователь вошел в аккаунт
+          # {_player}.setViewDistance(2)
+          # teleport {_player} to {_location}
+
+          set skript-yaml value "player.lastIp" from "%{_file}%.secure.%{_random}%" to "%{_player}'s ip%"
+            # Визуал
+              # Тайтл
+          send title "" with subtitle "&9☃ &fС возвращением." to {_player} for 4 seconds with 1 seconds fade in and 1 second fade out
+              # Отчистка чата
+          loop 60 times:
+            send "" to {_player}
+          send "" to {_player}
+          send "&a✔ &fВы успешно авторизовались в Ваш аккаунт!" to {_player}
+          send "  &fМы вас постараемся запомнить, что бы Вам" to {_player}
+          send "  &fбольше не приходилось вписывать пароль." to {_player}
+          send "" to {_player}
+              # Звуки
+          play sound "block.enchantment_table.use" with volume 2 with pitch 0.5 at {_player} for {_player}
+              # Эффекты
+
+          # Телепортируем игрока туда, где он был...
+          broadcast "%{temp::%{_player}%::location}%"
+          if {temp::%{_player}%::location} is set:
+            teleport {_player} to {temp::%{_player}%::location}
+          else:
+            set {_random} to getRandomLocation()
+            teleport {_player} to {_random}
+          reveal {_player} to all players
+
+          delete {temp::%{_player}%::chat::input}
+          delete {temp::%{_player}%::chat::output}
+          delete {temp::%{_player}%::blockAll}
+          save yaml "%{_file}%.secure.%{_random}%"
+          # {_player}.setViewDistance(8)
+
+          stop
+
+        else:
+          # Пользователь не вошел в аккаунт.
+            # Отчистка чата
+          loop 60 times:
+            send "" to {_player}
+          send "" to {_player}
+          send "&c⚠ &fНеправильный пароль! Вам стоит попробывать" to {_player}
+          send "  &fещё раз." to {_player}
+          send "" to {_player}
+          
+      wait 1 tick
+
+
+  else:
+    # Регистрация
+      # Сообщение
+        # Отчистка чата
+    loop 60 times:
+      send "" to {_player}
+    send "&9⬜ &fВы ещё не зарегистрировали свой аккаунт." to {_player}
+    send "  &fЧто бы это сделать Вам просто стоит следовать" to {_player}
+    send "  &fЭтим двум простым шагам:" to {_player}
+    send "" to {_player}
+    send "  &9¹ &fДля регистрации этого аккаунта, просто" to {_player}
+    send "  &fНапишите в чат ваш пароль." to {_player}
+    send "" to {_player}
+      # Телепортация игрока на позицию входа
+    set {_location} to getLoginPosition()
+    teleport {_player} to {_location}
+      # Небольшой визуальчик
+
+    # execute console command "/auth wave-%{_player}%"
+
+    set {_running} to true
+    while {_running} is true:
+      if {_player} is offline:
+        delete {_running}
+        unload yaml "%{_file}%.secure.%{_random}%"
+        stop
+
+      # Визуал.
+      if {_stage} is not set:
+        send title "" with subtitle "&9¹ &fНапишите в чат Ваш пароль." to {_player} for 6 seconds with 0 ticks fade in and 0 ticks fade out
+      else if {_stage} is 2:
+        send title "" with subtitle "&9² &fПовторите Ваш пароль." to {_player} for 6 seconds with 0 ticks fade in and 0 ticks fade out
+
+      if {temp::%{_player}%::blockAll} is not set:
+        set {temp::%{_player}%::blockAll} to true
+
+      if {temp::%{_player}%::chat::input} is not set:
+        set {temp::%{_player}%::chat::input} to true
+      if {temp::%{_player}%::chat::output} is set:
+        set {_result} to {temp::%{_player}%::chat::output}
+        delete {temp::%{_player}%::chat::output}
+        #
+        # Проверяем пароль...
+        # Пароль может быть любым! Вот это да.
+          # Визуал
+        execute console command "/auth wave-%{_player}%"
+
+        if {_stage} is not set:
+          loop 60 times:
+            send "" to {_player}
+          send "" to {_player}
+          send "  &9² &fВведите ваш пароль ещё раз для подтверждения" to {_player}
+          send "    &fНу или напишите в чат ""отмена"" в чат для того," to {_player}
+          send "    &fЧто бы выбрать другой пароль" to {_player}
+          send "" to {_player}
+
+          set {_password::1} to {_result}
+          set {_stage} to 2
+        else if {_stage} is 2:
+          if {_result} contains "отмена":
+            loop 60 times:
+              send "" to {_player}
+            send "" to {_player}
+            send "  &9¹ &fДля регистрации этого аккаунта, просто" to {_player}
+            send "  &fНапишите в чат ваш пароль." to {_player}
+            send "" to {_player}
+
+            delete {_password::1}
+            delete {_stage}
+          else:
+            set {_password::2} to {_result}
+            if {_password::1} is {_password::2}:
+              delete {_stage}
+              # Регистрируем пользователя...
+              # {_player}.setViewDistance(2)
+
+              set skript-yaml value "player.password" from "%{_file}%.secure.%{_random}%" to "%{_password::1} hashed with sha-256%"
+              set skript-yaml value "player.lastIp" from "%{_file}%.secure.%{_random}%" to "%{_player}'s ip%"
+
+                # Визуал.
+                  # Начало "квеста"
+                  # (Пока что этого квеста нету,
+                  # но скоро он появится)
+              send title "&9☗ &fДобро пожаловать!" with subtitle "&7Чувствуйте себя как дома" to {_player} for 4 seconds with 1 seconds fade in and 1 second fade out
+                  # Текст
+              loop 60 times:
+                send "" to {_player}
+              send "" to {_player}
+              send "&a✔ &fВаш аккаунт успешно зарегистрирован." to {_player}
+              send "  &fТеперь, используя пароль, который вы ввели," to {_player}
+              send "  &fвы сможете входить на сервер!" to {_player}
+              send "" to {_player}
+
+                  # Звуки
+              play sound "block.enchantment_table.use" with volume 2 with pitch 0.5 at {_player} for {_player}
+                  # Эффекты
+
+              if {temp::%{_player}%::location} is set:
+                teleport {_player} to {temp::%{_player}%::location}
+              else:
+                respawn({_player})
+
+              reveal {_player} to all players
+
+              delete {temp::%{_player}%::chat::input}
+              delete {temp::%{_player}%::chat::output}
+              delete {temp::%{_player}%::blockAll}
+              save yaml "%{_file}%.secure.%{_random}%"
+              # {_player}.setViewDistance(8)
+
+              stop
+            else:
+              loop 60 times:
+                send "" to {_player}
+              send "" to {_player}
+              send "&c⚠ &fВаши пароли не совпадают! Запомните, Вам" to {_player}
+              send "  &fНужно написать именно одинаковые пароли. Вот такое" to {_player}
+              send "  &fВот подтверждение ваших действий." to {_player}
+              send "" to {_player}
+              send "  &c² &fВведите ваш пароль ещё раз для подтверждения" to {_player}
+              send "    &fНу или напишите в чат ""отмена"" в чат для того," to {_player}
+              send "    &fЧто бы выбрать другой пароль" to {_player}
+
+              delete {_password::2}
+              set {_stage} to 2
+      if {temp::%{_player}%::blockAll} is not set:
+        set {temp::%{_player}%::blockAll} to true
+
+      wait 1 tick
+
+on command:
+  if {temp::%player%::blockAll} is true:
+    cancel event
+    delete {temp::%player%::blockAll}
+
+    if "%command%" is "l" or "login" or "r" or "reg" or "register":
+      play sound "block.note.bell" with volume 0.5 with pitch 0.6 at player for player
+
+      send ""
+      send "&9ℹ &fНет-нет! Никаких неудобных команд!"
+      send "  &fВам нужно просто написать ваш пароль"
+      send "  &fв чат, и всё."
+      send ""
+
+on break:
+  if {temp::%player%::blockAll} is true:
+    cancel event
+    delete {temp::%player%::blockAll}
+
+on place:
+  if {temp::%player%::blockAll} is true:
+    cancel event
+    delete {temp::%player%::blockAll}
+
+on drop:
+  if {temp::%player%::blockAll} is true:
+    cancel event
+    delete {temp::%player%::blockAll}
+
+on right click:
+  if {temp::%player%::blockAll} is true:
+    cancel event
+    delete {temp::%player%::blockAll}
+
+on chat:
+  if {temp::%player%::blockAll} is true:
+    cancel event
+    delete {temp::%player%::blockAll}
+
+on chat:
+  if {temp::%player%::chat::input} is set:
+    cancel event
+    set {temp::%player%::chat::output} to message
+    wait 1 tick
+    delete {temp::%player%::chat::input}
+
+command sound <text> <number>:
+  trigger:
+    play sound arg 1 with volume 2 with pitch arg 2 at player for player
+
+# ---------------------------------
+#   FUNCTION getLoginPosition()
+# Функция, которая "создаёт" позицию
+# для входа и возвращяет её, если
+# она есть
+#
+# Возвращяет:
+# - Позицию
+
+function getLoginPosition() :: location:
+    # Подготовка файлов...
+  set {_file} to "{@settings}"
+  set {_random} to random integer between 000 and 999
+
+  load yaml "%{_file}%" as "%{_file}%.secure.%{_random}%"
+    # Берём данные
+  set {_data::yaw} to skript-yaml value "login.yaw" from "%{_file}%.secure.%{_random}%"
+  set {_data::pitch} to skript-yaml value "login.pitch" from "%{_file}%.secure.%{_random}%"
+  set {_data::world} to skript-yaml value "login.world" from "%{_file}%.secure.%{_random}%"
+  set {_data::location} to skript-yaml value "login.location" from "%{_file}%.secure.%{_random}%"
+
+  unload yaml "%{_file}%.secure.%{_random}%"
+    # Обработка
+  set {_data::yaw} to {_data::yaw} parsed as number
+  set {_data::pitch} to {_data::pitch} parsed as number
+
+  if {_data::location} and {_data::world} is set:
+    set {_location} to getLocation({_data::location}, {_data::world})
+    if {_data::pitch} and {_data::yaw} is set:
+      set {_location}'s yaw to {_data::yaw}
+      set {_locations}'s pitch to {_data::pitch}
+    return {_location}
+
+# ---------------------------------
+#   FUNCTION getSpawnPosition()
+# А вот эта функция подгружает позицию
+# спавна, обрабатывает её, и возвращяет.
+# Удобненько.
+#
+# Возвращяет:
+# - Позицию
+function getSpawnPosition() :: location:
+    # Подготовка файлов...
+  set {_file} to "{@settings}"
+  set {_random} to random integer between 000 and 999
+
+  load yaml "%{_file}%" as "%{_file}%.secure.%{_random}%"
+  # Берём данные
+  set {_data::yaw} to skript-yaml value "spawn.yaw" from "%{_file}%.secure.%{_random}%"
+  set {_data::pitch} to skript-yaml value "spawn.pitch" from "%{_file}%.secure.%{_random}%"
+  set {_data::world} to skript-yaml value "spawn.world" from "%{_file}%.secure.%{_random}%"
+  set {_data::location} to skript-yaml value "spawn.location" from "%{_file}%.secure.%{_random}%"
+
+  unload yaml "%{_file}%.secure.%{_random}%"
+  # Обработка
+  set {_data::yaw} to {_data::yaw} parsed as number
+  set {_data::pitch} to {_data::pitch} parsed as number
+
+  if {_data::location} and {_data::world} is set:
+    set {_location} to getLocation({_data::location}, {_data::world})
+    if {_data::pitch} and {_data::yaw} is set:
+      set {_location}'s yaw to {_data::yaw}
+      set {_locations}'s pitch to {_data::pitch}
+  return {_location}
+
+function getRandomLocation() :: location:
+    # Подготовка файлов...
+  set {_file} to "{@settings}"
+  set {_random} to random integer between 000 and 999
+
+  load yaml "%{_file}%" as "%{_random}%"
+
+  set {_world} to "world"
+
+  set {_locations::*} to skript-yaml list "location.list" from "%{_random}%"
+  if {_locations::*} is not set:
+    add "-2693, 72, -155" to {_locations::*}
+  unload yaml "%{_random}%"
+  
+  set {_random} to random element of {_locations::*}
+  set {_location} to getLocation("%{_random}%", "%{_world}%")
+
+  return {_location}

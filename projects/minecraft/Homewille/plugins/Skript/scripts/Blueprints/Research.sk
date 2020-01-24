@@ -1,0 +1,11 @@
+
+command test:
+  trigger:
+    setBlueprint(player, "leather.armor", true)
+
+    set {_check} to checkBlueprint(player, "leather.armor")
+    broadcast "CHECK: %{_check}%"
+
+command getItem:
+  trigger:
+    send "%player's held item%"

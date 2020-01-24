@@ -1,0 +1,147 @@
+options:
+  folder: /home/Database/users
+  config: /home/Addons/Crafts
+
+function checkBlueprint(player: player, category: string) :: boolean:
+  set {_uuid} to {_player}'s uuid
+  
+  set {_file} to "{@folder}/%{_uuid}%.yml"
+  set {_random} to random integer between 0000 and 9999
+
+  load yaml "%{_file}%" as "%{_random}%"
+
+  if skript-yaml value "blueprints.%{_category}%" from "%{_random}%" is set:
+    set {_check} to skript-yaml value "blueprints.%{_category}%" from "%{_random}%"
+
+    if {_check} is true:
+      set {_return} to true
+  if {_return} is not set:
+    set {_return} to false
+
+  unload yaml "%{_random}%"
+  return {_return}
+
+function setBlueprint(player: player, category: string, value: boolean):
+  set {_uuid} to {_player}'s uuid
+
+  set {_file} to "{@folder}/%{_uuid}%.yml"
+  set {_random} to random integer between 0000 and 9999
+
+  load yaml "%{_file}%" as "%{_random}%"
+
+  set skript-yaml value "blueprints.%{_category}%" from "%{_random}%" to {_value}
+
+  save yaml "%{_random}%"
+
+function getSkillTreeName(skill: string) :: string:
+  add "sewing/Шитьё" to {_skills::*}
+
+  loop {_skills::*}:
+    set {_temp::*} to loop-value split at "/"
+    if {_temp::1} is {_skill}:
+      set {_found} to true
+      
+      return {_temp::2}
+      stop
+
+  if {_found} is false:
+    return "&cНеизвестно"
+
+function checkSkillTree(skill: string) :: boolean:
+  add "sewing" to {_skills::*}
+
+  if {_skills::*} contains {_skill}:
+    return true
+  else:
+    return false
+
+function getSkillTree(player: player) :: string:
+  set {_uuid} to {_player}'s uuid
+
+  set {_file} to "{@folder}/%{_uuid}%.yml"
+  set {_random} to random integer between 0000 and 9999
+
+  load yaml "%{_file}%" as "%{_random}%"
+
+  set {_check} to skript-yaml value "blueprints.choosed" from "%{_random}%"
+  if {_check} is not set:
+    set {_check} to "0"
+
+  return {_check}
+  unload "%{_random}%"
+
+function setSkillTree(player: player, skill: string):
+  if checkSkillTree({_skill}) is true:
+    # Ставим...
+    set {_uuid} to {_player}'s uuid
+
+    set {_file} to "{@folder}/%{_uuid}%.yml"
+    set {_random} to random integer between 0000 and 9999
+
+    load yaml "%{_file}%" as "%{_random}%"
+
+    set skript-yaml value "blueprints.choosed" from "%{_random}%" to "%{_skill}%"
+    save yaml "%{_random}%"
+
+function getCrafts(player: player) :: string:
+  set {_skill} to getSkillTree({_skill})
+  if checkSkillTree({_skill}) is false:
+    set {_skill} to 0
+  
+  # Файл с всеми крафтами...
+  set {_file} to "{@config}/recipes.yml"
+  set {_random} to random integer between 0000 and 9999
+
+  load yaml "%{_file}%" as "%{_random}%"
+
+  set {_recipes::*} to all skript-yaml nodes from "%{_random}%"
+
+  set {_loop-index} to 1
+  loop {_recipes::*}:
+    if loop-value contains "sysId":
+      set {_number} to {_loop-index} - 1
+      set {_path} to {_recipes::%{_loop-index}%}
+      replace all ".sysId" in {_path} with ""
+
+      set {_recipe::craft} to skript-yaml value "%{_path}%.craft" from "%{_random}%"
+
+      set {_recipe::result::item} to skript-yaml value "%{_path}%.result.item" from "%{_random}%"
+      set {_recipe::result::name} to skript-yaml value "%{_path}%.result.display.name" from "%{_random}%"
+      set {_recipe::result::lore::*} to skript-yaml list "%{_path}%.result.display.lore" from "%{_random}%"
+
+      delete {_recipe::skill}
+      
+      set {_recipe::skill} to skript-yaml value "%{_path}%.skill" from "%{_random}%"
+      if {_recipe::skill} is not set:
+        set {_recipe::skill} to "0"
+
+      if {_recipe::craft} and {_recipe::result::item} is set:
+        # Добавляем крафт...
+        if {_recipe::skill} is not "0":
+          if checkBlueprint({_player}, {_recipe::skill}) is true:
+            add "%{_path}%" to {_crafts::*}
+        else:
+          add "%{_path}%" to {_crafts::*}
+
+    add 1 to {_loop-index} 
+    
+  loop {_crafts::*}:
+    if {_return} is not set:
+      set {_return} to loop-value
+    else:
+      set {_return} to "%{_return}%/%loop-value%"
+      
+  return {_return}
+  unload yaml "%{_random}%"
+
+function getIngregient(ingr: string) :: string:
+  set {_file} to "{@config}/ingredients.yml"
+  set {_random} to random integer between 0000 and 9999
+
+  load yaml "%{_file}%" as "%{_random}%"
+
+  set {_ingr::name} to skript-yaml value "ingredients.%{_ingr}%.name" from "%{_random}%"
+  if {_ingr::name} is set:
+    return {_ingr::name}
+  else:
+    return "0"

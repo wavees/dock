@@ -1,0 +1,611 @@
+on load:
+
+  wipe server crafting recipes
+
+#   # Ингридиенты
+  set {_stick} to stick named "&9⚀ &fПалка" with lore "&7~ Очень много вы ею не сделаете. Ну, сможете сделать", "&7какую-то заточку ну или маленький топорик,", "&7ну и на этом почти что всё..."
+#   add "{Item:1}" to item-nbt of {_stick}
+
+  set {_flint} to flint named "&9⚀ &fКремень" with lore "&7~ Самый обычный материал, используется для создания", "&7первоначальных инструментов для подальшего выживания...", "&7Смотрите в «Книге Выжившего»"
+  set {_stone} to firework charge named "&9⚀ &fКамень" with lore "&7~ Казалось бы, обычный камешек, но его польза", "&7очень высока в этом суровом мире."
+
+#   set {_iron::1} to iron nugget named "&9⚀ &fКусочек железа" with lore "&7~ Довольно-таки часто используется в создании оружия", "&7и брони. И обе эти вещи являются почти что необходимыми", "&7в этом мире!"
+#   set {_leather} to leather named "&9⚁ &fКожа" with lore "&7~ Неизвестно, откуда её содрали. Может с коровы,", "&7может с человека, а может парочка зомби", "&7решила устроить БДСМ сессию."
+#   set {_feather} to feather named "&9⚁ &fПеро" with lore "&7~ Им можно набить подушку или пощекотать зомби.", "&7И от первого и от второго вы уснёте как убитый."
+
+#   set {_string} to string named "&9⚀ &fНить" with lore "&7~ Повеситься на ней у вас не получится, но зато", "&7получится сделать совсем немного интересных вещей!"
+
+  # Заточка
+
+  set {_knife} to wooden sword named "&c⚔ &fЗаточка" with lore "&7~ Самое начальное оружие. Наносит очень мало", "&7урона, но, тем не менее, с его помощью вы сможете" and "&7себя хоть как-то защитить.."
+  add "{HideFlags:2,AttributeModifiers:[{UUIDMost:-6228772934378500782L,UUIDLeast:-5869399467251069233L,Amount:-3.0d,AttributeName:""generic.attackSpeed"",Operation:0,Name:""generic.attackSpeed""},{UUIDMost:-1770920521479467298L,UUIDLeast:-5799970676680391269L,Amount:1.0d,AttributeName:""generic.attackDamage"",Operation:0,Name:""generic.attackDamage""}]}" to item-nbt of {_knife}
+
+  register new custom shapeless recipe with result {_knife} using {_stick} and {_flint}
+
+  # Маленький топорик
+
+  set {_wand::1} to wooden axe named "&9⚒ &fТопорик" with lore "&7~ Очень хилый и слабый топорик, который", "&7сломается спустя пару использований, но", "&7это лучше, чем ничего"
+  add "{HideFlags:2,AttributeModifiers:[{UUIDMost:-8708550169091747916L,UUIDLeast:-7530656638635326392L,Amount:0.8d,AttributeName:""generic.attackDamage"",Operation:0,Name:""generic.attackDamage""}]}" to item-nbt of {_wand::1}
+
+  set {_rand} to random integer between 1 and 5
+  set {_wand::1}'s durability to 52 + {_rand}
+
+  register new custom shapeless recipe with result {_wand::1} using {_stick}, {_flint} and {_flint}
+
+#   # Кожа
+  # register new custom furnace recipe with result {_leather} using rotten flesh
+
+#   # 
+#   # КОЖАННАЯ БРОНЯ
+#   # 
+
+#   # шлем
+#   set {_armor::leather::helmet} to leather helmet named "&e♚ &fКожаный шлем" with lore "&7~ Хоть это и очень простая и слабая защита от", "&7зомби в этом мире, но она хотя бы существует!"
+
+#   register new custom shaped recipe with result {_armor::leather::helmet} using air, {_leather} and {_string} with shape "bbb", "cac"
+
+#   # нагрудник
+#   set {_armor::leather::chestplate} to leather chestplate named "&e♚ &fКожаная куртка" with lore "&7~ Эта одежда сможет защитить вас от прямых укусов зомби", "&7ну или от холода. Но этого на долго не хватит..."
+
+#   register new custom shaped recipe with result {_armor::leather::chestplate} using air, {_leather} and {_string} with shape "cac", "bbb", "ccc"
+
+#   # штаны
+#   set {_armor::leather::leggings} to leather leggings named "&e♚ &fКожаные штаны" with lore "&7~ Будет немного похуже чем куртка, но тем не менее.", "&7Эта одежда сможет вас защитить от холода и, возможно,", "&7поможет вам в выживании."
+
+#   register new custom shaped recipe with result {_armor::leather::leggings} using air, {_leather} and {_string} with shape "bbb", "cac" and "bab"
+
+#   # Ботинки
+#   set {_armor::leather::boots} to leather boots named "&e♚ &fКожаные ботинки" with lore "&7~ Немного прибавляют скорость и удобство хождения.", "&7Очень удобны в каменистых местностях, никак не" and "&7спасают от зомби."
+#   add "{HideFlags:2,AttributeModifiers:[{UUIDMost:-1944036011942327269L,UUIDLeast:-5598769764558788257L,Amount:0.02d,AttributeName:""generic.movementSpeed"",Operation:0,Name:""generic.movementSpeed""}]}" to item-nbt of {_armor::leather::boots}
+
+#   register new custom shaped recipe with result {_armor::leather::boots} using air, {_leather} and {_string} with shape "cac", "bab"
+
+#   # 
+#   # Броня из железных осколков
+#   # 
+#   set {_iron::2} to iron ingot named "&9⚀ &fЖелезный слиток" with lore "&7~ Один из представителей цветных металлов, который", "&7используется для создания очень прочной брони."
+
+#   # Шлем
+#   set {_armor::iron::helmet} to chainmail helmet named "&e♜ &fУплотнённый шлем" with lore "&7~ Хоть этот шлем и будет вас спасать от много,", "&7но он очень тяжелый. Так что не рекомендуется его" and "&7использовать, если у вас нету запасного плана.."
+#   add "{HideFlags:2,AttributeModifiers:[{UUIDMost:8043191364690397589L,UUIDLeast:-5196922277715004546L,Amount:-0.005d,AttributeName:""generic.movementSpeed"",Operation:0,Name:""generic.movementSpeed""},{UUIDMost:-863147208622257050L,UUIDLeast:-9030904585736602558L,Amount:1.0d,AttributeName:""generic.maxHealth"",Operation:0,Name:""generic.maxHealth""}]}" to item-nbt of {_armor::iron::helmet}
+
+#   register new shaped recipe with result {_armor::iron::helmet} using air, {_iron::1} and {_iron::2} with shape "bcb" and "bab" 
+
+#   # Нагрудник
+#   set {_armor::iron::chestplate} to chainmail chestplate named "&e♜ &fУплотнённый нагрудник" with lore "&7~ Очень тяжелый но очень защищённый нагрудник,", "&7который, возможно, сможет вас спасти от быстрой", "&7смерти."
+#   add "{HideFlags:2,AttributeModifiers:[{UUIDMost:-6052612196241291214L,UUIDLeast:-6929453199260628564L,Amount:-0.02d,AttributeName:""generic.movementSpeed"",Operation:0,Name:""generic.movementSpeed""},{UUIDMost:-3345029838731850104L,UUIDLeast:-9115616257622033411L,Amount:4.0d,AttributeName:""generic.maxHealth"",Operation:0,Name:""generic.maxHealth""}]}" to item-nbt of {_armor::iron::chestplate}
+
+#   register new shaped recipe with result {_armor::iron::chestplate} using air, {_iron::1} and {_iron::2} with shape "bab", "ccc" and "bbb"
+
+#   # Поножи
+#   set {_armor::iron::leggings} to chainmail leggings named "&e♜ &fУплотнённые поножи" with lore "&7~ Смогут защитить вас от прямого попадания малокалиберным", "&7оружием. Но эти поножи являются очень тяжёлымы..."
+#   add "{HideFlags:2,AttributeModifiers:[{UUIDMost:8043191364690397589L,UUIDLeast:-5196922277715004546L,Amount:-0.005d,AttributeName:""generic.movementSpeed"",Operation:0,Name:""generic.movementSpeed""},{UUIDMost:-5801775447255201201L,UUIDLeast:-6504639680272719267L,Amount:2.0d,AttributeName:""generic.maxHealth"",Operation:0,Name:""generic.maxHealth""}]}" to item-nbt of {_armor::iron::leggings}
+
+#   register new shaped recipe with result {_armor::iron::leggings} using air, {_iron::1} and {_iron::2} with shape "bbb", "bab" and "cac"
+
+#   # Ботинки
+#   set {_armor::iron::boots} to chainmail boots named "&e♜ &fУплотнённые ботинки" with lore "&7~ Очень помогают в каменистой местности, но так же", "&7являются очень тяжёлыми."
+#   add "{HideFlags:2,AttributeModifiers:[{UUIDMost:8043191364690397589L,UUIDLeast:-5196922277715004546L,Amount:-0.005d,AttributeName:""generic.movementSpeed"",Operation:0,Name:""generic.movementSpeed""},{UUIDMost:8634639493549148743L,UUIDLeast:-5383790330927637838L,Amount:1.0d,AttributeName:""generic.maxHealth"",Operation:0,Name:""generic.maxHealth""}]}" to item-nbt of {_armor::iron::boots}
+
+#   register new shaped recipe with result {_armor::iron::boots} using air, {_iron::1} with shape "bab" and "bab"
+
+#   # Ножик
+
+on inventory open:
+  if type of event-inventory is workbench inventory:
+    cancel event
+    set {_target} to event-player's targeted block
+
+    openWorkbench(event-player, {_target})
+function openWorkbench(player: player, location: location):
+  set {_uuid} to {_player}'s uuid
+
+  # Проверяем, не крафтиться ли ничего на верстаке
+  if {crafts::%{_location}%::crafting} is set:
+    delete {crafts::%{_location}%::crafting}
+    # broadcast "%{crafts::%{_location}%::path}%"
+    # broadcast "%{crafts::%{_location}%::number}%"
+    # broadcast "%{crafts::%{_location}%::done}%"
+
+    wait 1 tick
+    if {crafts::%{_location}%::done} is true:
+      set {_path} to {crafts::%{_location}%::path}
+      set {_number} to {crafts::%{_location}%::number}
+      set {_hologram} to {crafts::%{_location}%::hologram}
+
+      delete {crafts::%{_location}%::*}
+
+      set {_file} to "/home/Addons/Crafts/recipes.yml"
+      set {_random} to random integer between 0000 and 9999
+
+      load yaml "%{_file}%" as "%{_random}%"
+
+      # Берём нужную инфу...
+      set {_result::item} to skript-yaml value "%{_path}%.result.item" from "%{_random}%"
+      set {_result::item} to {_result::item} parsed as item
+      if {_result::item} is not set:
+        stop
+      set {_result::name} to skript-yaml value "%{_path}%.result.name" from "%{_random}%"
+      set {_result::lore::*} to skript-yaml list "%{_path}%.result.lore" from "%{_random}%"
+      
+      set {_result::durability} to skript-yaml value "%{_path}%.result.durability" from "%{_random}%"
+      set {_result::durability} to {_result::durability} parsed as number
+
+      set {_result::nbt} to skript-yaml value "%{_path}%.result.nbt" from "%{_random}%"
+
+      if {_result::durability} is set:
+        set {_result::item}'s durability to {_result::durability}
+      if {_result::nbt} is set:
+        add "%{_result::nbt}%" to item-nbt of {_result::item}
+
+      set {_result::item} to {_result::item} named "%{_result::name}%" with lore coloured {_result::lore::*}
+
+      delete hologram {_hologram}
+
+      set {_location::item} to {_location}
+      add 1.5 to y coordinate of {_location::item}
+
+      drop {_number} of {_result::item} at {_location::item}
+      unload yaml "%{_random}%"
+
+      stop
+    else:
+      if {crafts::%{_location}%::crafting} is set:
+        set {_crafting} to true
+    
+  if {_crafting} is true:
+    open virtual chest inventory with size 3 named "&8Создание" to {_player}
+
+    set {_path} to {crafts::%{_location}%::path}
+    set {_time} to {crafts::%{_location}%::time}
+
+    set {_file} to "/home/Addons/Crafts/recipes.yml"
+    set {_random} to random integer between 0000 and 9999
+
+    load yaml "%{_file}%" as "%{_random}%"
+
+    set {_result::item} to skript-yaml value "%{_path}%.result.item" from "%{_random}%"
+    set {_result::item} to {_result::item} parsed as item
+    if {_result::item} is not set:
+      broadcast "&cerror in crafts &ccrafting in process window; %{_path}% || %{_result::item}% || %{_path}% || %{_time}%"
+
+      unload yaml "%{_random}%"
+      stop
+    set {_result::name} to skript-yaml value "%{_path}%.result.name" from "%{_random}%"
+    set {_result::lore::*} to skript-yaml list "%{_path}%.result.lore" from "%{_random}%"
+
+    format gui slot 13 of {_player} with {_result::item} named "%{_result::name}%" with lore coloured {_result::lore::*}
+
+    unload yaml "%{_random}%"
+  else:
+    open virtual chest inventory with size 5 named "&8Верстак" to {_player}
+
+    # Ремёсла
+    if getSkillTree({_player}) is "0":
+      set {_skills} to player head named "&c⚠ &fВыбрать ветку умений" with lore "&7~ Каждый выживший должен уметь что-то своё, что бы быть", "&7хорошим в этом деле. Так что лучше вам прямо сейчас выбрать то,", "&7что вы будете делать лучше всех в вашей команде. И кстати,", "&7вы не сможете поменять то, что выбрали! Так что выбирайте", "&7с умом!"
+      add "{SkullOwner:{Id:""01e6224d-f694-4403-b2ce-2792431ccb0c"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGQ5YjYzYzNiNzQ1ZjVkZjg1MTE3NTk3MmVlZmQ3N2VjYTUyNjlkNDg2N2M0ZWRhMTU5NGZmM2U2NjM0NjU4In19fQ==""}]}}}" to item-nbt of {_skills}
+    else:
+      set {_skill} to getSkillTree({_player})
+
+      set {_name} to getSkillTreeName({_skill})
+      set {_skills} to player head named "&9☕ &fДерево умений &7(%{_name}%)" with lore "&7~ Тут вы можете посмотреть всё, что вам будет доступно", "&7в будующем. А так же вы сможете посмотреть всё, что уже знаете", "&7и уже можете делать!" 
+      # Разные головы под разные ветки умений
+      if {_skill} is "sewing":
+        set {_head} to "{SkullOwner:{Id:""372c81ef-d33f-334a-802f-83f38bd473c0"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDYzYTRlOTg4MmYxODkyMzNmOWJmMTEyMWI5NmI3OTliYjNmZDM3NzA1NGYzOWRkMTlhNWQ4M2JlMDFmZjYifX19""}]}}}"
+      else if {_skill} is "fermer":
+        set {_head} to "{SkullOwner:{Id:""45e30ff8-17c4-4778-a2df-b215ba53f8c7"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjY1NTE3MTZkNWQxZjE2NTc3MTY2N2E3YjQ4MmM5M2RiM2ViNDQ0ZTczZGVlNzMzZmYxOTFjZWY4OWI5YTQxIn19fQ==""}]}}}"
+      else if {_skill} is "weaponry":
+        set {_head} to "{SkullOwner:{Id:""21fa9f43-347a-4e03-b8a4-a27aee18f44f"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODIyYTQ4YTU3NTllZGRlZjllMjkxOGZjODU5OTZmODQ5MWNjOTI1NzhkNTRkY2Q2MmUyYjZkOTEzYmZiNDIxZSJ9fX0=""}]}}}"
+      else if {_skill} is "building":
+        set {_head} to "{SkullOwner:{Id:""7ebdada8-0140-4f12-b8fb-2ef1916ea963"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmQ3NDI4MzlkMzQxMjVkMTI4ZGY0ZTIzZWI2Mzc0OTgyYWM2N2Q3MmNiZjYzOTI1ZWQ2OTFlOTNjMjRlZmMzNyJ9fX0=""}]}}}"
+      else if {_skill} is "alchemy":
+        set {_head} to "{SkullOwner:{Id:""0274de28-313d-4e5e-b2c3-06fe72249550"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmZjOWQ0NzFmMzczNTU3NTgzMzkyZWFlZmFmNjU5YmJmZWMyMzg1YzYwZmJhYjY4NjBmMjM2YjVmYjI0MSJ9fX0=""}]}}}"
+      else:
+        set {_head} to "{SkullOwner:{Id:""ee6cb849-1384-4efa-bed7-23ff26bf79b1"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWQ5MzExN2I5ZTE4MGUwZGMzOWU1ZThhMDUwODQ4MmNmMWY2MGU0NDZlMDIyOTc4ZmUwNjUxYTU2MmE1OTdmIn19fQ==""}]}}}"
+      
+      add "%{_head}%" to item-nbt of {_skills}
+
+    format gui slot 10 of {_player} with {_skills} to run:
+      if getSkillTree({_player}) is "0":
+        # -------------------
+        # Меню выбора умения
+        set {skillTree::%{_player}%::returnToWorkbench} to true
+
+        set {skills::temp::%player%::location} to {_location}
+        execute player command "/skill"
+
+        wait 1 tick
+        delete {skillTree::%{_player}%::returnToWorkbench}
+      else:
+        # -----------------------
+        # Открываем Дерево Умений
+    # Текущий крафт
+    set {_craft} to player head named "&9... &fОжидание крафтов.."
+    add "{SkullOwner:{Id:""ee6cb849-1384-4efa-bed7-23ff26bf79b1"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWQ5MzExN2I5ZTE4MGUwZGMzOWU1ZThhMDUwODQ4MmNmMWY2MGU0NDZlMDIyOTc4ZmUwNjUxYTU2MmE1OTdmIn19fQ==""}]}}}" to item-nbt of {_craft}
+
+    format gui slot 19 of {_player} with {_craft}
+    # Помощь
+    set {_help} to player head named "&9ℹ &fПомощь"
+    add "{SkullOwner:{Id:""a0dd7021-f24c-4e1c-b355-807eec970396"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2Y2YmY5NThhYmQ3ODI5NWVlZDZmZmMyOTNiMWFhNTk1MjZlODBmNTQ5NzY4MjllYTA2ODMzN2MyZjVlOCJ9fX0=""}]}}}" to item-nbt of {_help}
+
+    format gui slot 28 of {_player} with {_help}
+
+    format gui slot 3,12,21,30,39 of {_player} with black glass pane named "&7"
+
+    # Ищем все возможные крафты для игрока...
+    set {_file} to "/home/Addons/Crafts/recipes.yml"
+    set {_random} to random integer between 0000 and 9999
+
+    load yaml "%{_file}%" as "%{_random}%"
+
+    set {_crafts} to getCrafts({_player})
+    set {_crafts::*} to {_crafts} split at "/"
+
+    set {_slot} to 4
+    loop {_crafts::*}:
+      set {_path} to loop-value
+
+      # Крафт существует, можно добавлять..
+      set {_recipe::craft} to skript-yaml value "%{_path}%.craft" from "%{_random}%"
+      set {_sysId} to skript-yaml value "%{_path}%.sysId" from "%{_random}%"
+
+      if {_recipe::craft} is set:
+
+        # Проверяем крафт...
+        delete {_ingredients::visual::*}
+
+        set {_craft::%{_sysId}%::*} to {_recipe::craft} split at "+"
+        loop {_craft::%{_sysId}%::*}:
+          set {_temp::*} to loop-value-2 split at "/"
+          if {_temp::2} contains "=":
+            set {_temp::ingredient::*} to {_temp::2} split at "="
+
+            set {_ingredient} to {_temp::ingredient::1}
+            set {_number} to {_temp::ingredient::2} parsed as number
+          else:
+            set {_ingredient} to {_temp::2}
+          if {_temp::1} is "id":
+            set {_ingredient} to getIngregient({_ingredient})
+          if {_ingredient} is not set:
+            set {_ingredient} to "0"
+          if {_ingredient} is "0":
+            set {_cancel} to true
+          else:
+            if {_number} is not set:
+              set {_number} to 1
+            add "%{_ingredient}%=%{_number}%" to {_ingredients::visual::*}
+
+        if {_cancel} is not true:
+          # Крафт проверен, всё нормально...
+          set {_result::item} to skript-yaml value "%{_path}%.result.item" from "%{_random}%"
+          set {_result::name} to skript-yaml value "%{_path}%.result.name" from "%{_random}%"
+          set {_result::lore::*} to skript-yaml list "%{_path}%.result.lore" from "%{_random}%"
+
+          if {_result::item} is not set:
+            set {_result::item} to barrier
+          if {_result::name} is not set:
+            set {_result::name} to "&c⚠ &fОшибка: имя не найденно &7(%{_path}%)"
+          if {_result::lore::*} is not set:
+            add "&c⚠ &fОшибка: описание не найденно &7(%{_path}%)" to {_result::lore::*}
+
+          set {_result::item} to "%{_result::item}%" parsed as item
+
+          # Спец. настройки...
+          set {_recipe::nbt} to skript-yaml value "%{_path}%.result.nbt" from "%{_random}%"
+          set {_recipe::durability} to skript-yaml value "%{_path}%.result.durability" from "%{_random}%"
+          set {_recipe::durability} to "%{_recipe::durability}%" parsed as number
+
+          if {_recipe::nbt} is set:
+            add "%{_recipe::nbt}%" to item-nbt of {_recipt::item}
+          if {_recipe::durability} is set:
+            set {_recipe::item}'s durability to {_recipe::durability}
+  
+          # Показываем крафт в лоре...
+          add "" to {_result::lore::*}
+          add "&9⚏ &fДля создания вам нужно:" to {_result::lore::*}
+          loop {_ingredients::visual::*}:
+            set {_temp::*} to loop-value-2 split at "="
+
+            set {_item} to {_temp::1}
+            set {_number} to {_temp::2}
+
+            add "%{_item}% %{_number}% шт." to {_result::lore::*}
+
+          # Проверяем инвентарь игрока...
+          loop {_craft::%{_sysId}%::*}:
+            delete {_ingredient::contains}
+
+            set {_temp::*} to loop-value-2 split at "/"
+            set {_temp::ingredient::*} to {_temp::2} split at "="
+
+            set {_ingredient} to getIngregient({_temp::ingredient::1})
+            set {_number} to {_temp::ingredient::2} parsed as number
+
+            loop all items in {_player}'s inventory:
+              if name of loop-item contains "%{_ingredient}%":
+                set {_ingredient::contains} to true
+                if number of loop-item in {_player}'s inventory < {_number}:
+                  set {_need} to {_number} - number of loop-item in {_player}'s inventory
+                  add "%{_ingredient}%=%{_need}%" to {_ingredients::need::%{_sysId}%::*}
+            if {_ingredient::contains} is not true:
+              add "%{_ingredient}%=%{_number}%" to {_ingredients::need::%{_sysId}%::*}
+
+          if {_ingredients::need::%{_sysId}%::*} is set:
+            add "" to {_result::lore::*}
+            add "&c⚠ &fДля создания предмета вам не хватает:" to {_result::lore::*}
+            loop {_ingredients::need::%{_sysId}%::*}:
+              set {_temp::*} to loop-value-2 split at "="
+
+              set {_loop} to {_temp::1}
+              set {_number} to {_temp::2}
+
+              replace all "&e" and "&9" in {_loop} with "&c"
+              add "%{_loop}% %{_number}% шт." to {_result::lore::*}
+          else:
+            add "" to {_result::lore::*}
+            add "&a✔ &fВы можете сделать этот предмет" to {_result::lore::*}
+          format gui slot {_slot} of {_player} with {_result::item} named "%{_result::name}%" with lore coloured {_result::lore::*} to run:
+            craftWindow({_player}, {_path}, 1, {_location})
+
+          add 1 to {_slot}
+          if {_slot} is 9 or 18 or 27 or 36:
+            add 4 to {_slot}
+
+function craftWindow(player: player, path: string, num: number, location: location):
+  set {_file} to "/home/Addons/Crafts/recipes.yml"
+  set {_random} to random integer between 0000 and 9999
+  
+  set {_data::number} to {_num}
+
+  load yaml "%{_file}%" as "%{_random}%"
+
+  set {_recipe::craft} to skript-yaml value "%{_path}%.craft" from "%{_random}%"
+  if {_recipe::craft} is set:
+    set {_craft::*} to {_recipe::craft} split at "+"
+
+    # Открываем меню "выбора" крафта
+
+    open virtual chest inventory with size 3 named "&8Создание" to {_player}
+
+    set {_result::item} to skript-yaml value "%{_path}%.result.item" from "%{_random}%"
+    set {_result::item} to {_result::item} parsed as item
+    if {_result::item} is not set:
+      set {_result::item} to barrier
+
+    set {_result::name} to skript-yaml value "%{_path}%.result.name" from "%{_random}%" 
+
+    set {_result::lore::*} to skript-yaml list "%{_path}%.result.lore" from "%{_random}%"
+    set {_result::time} to skript-yaml value "%{_path}%.result.time" from "%{_random}%"
+    set {_result::time} to {_result::time} parsed as number
+    if {_result::time} is not set:
+      set {_result::time} to 2
+
+    # Смотрим сколько времени будет крафтиться этот предмет...
+    add "" to {_result::lore::*}
+    add "&9⚃ &fКол-во: &9%{_data::number}%" to {_result::lore::*}
+    add "" to {_result::lore::*}
+
+    set {_time::visual} to "%{_data::number} * {_result::time}% seconds" parsed as timespan
+    set {_time::visual} to "%{_time::visual}%"
+
+    replace all "minutes" in {_time::visual} with "м."
+    replace all "minute" in {_time::visual} with "м."
+
+    replace all "seconds" in {_time::visual} with "с."
+    replace all "second" in {_time::visual} with "с."
+
+    replace all " and " in {_time::visual} with " "
+
+    add "&9☕ &fВремя на создание: &9%{_time::visual}%" to {_result::lore::*}
+
+    # Проверяем инвентарь игрока...
+    loop {_craft::*}:
+      delete {_ingredient::contains}
+
+      set {_temp::*} to loop-value split at "/"
+      set {_temp::ingredient::*} to {_temp::2} split at "="
+
+      set {_ingredient} to getIngregient({_temp::ingredient::1})
+      set {_number} to {_temp::ingredient::2} parsed as number
+
+      set {_number} to {_number} * {_data::number}
+
+      loop all items in {_player}'s inventory:
+        if name of loop-item contains "%{_ingredient}%":
+          set {_ingredient::contains} to true
+          if number of loop-item in {_player}'s inventory < {_number}:
+            set {_need} to {_number} - number of loop-item in {_player}'s inventory
+            add "%{_ingredient}%=%{_need}%" to {_ingredients::need::*}
+      if {_ingredient::contains} is not true:
+        add "%{_ingredient}%=%{_number}%" to {_ingredients::need::*}
+
+    if {_ingredients::need::*} is set:
+      add "" to {_result::lore::*}
+      add "&c⚠ &fДля создания предмета вам не хватает:" to {_result::lore::*}
+      loop {_ingredients::need::*}:
+        set {_temp::*} to loop-value split at "="
+
+        set {_loop} to {_temp::1}
+        set {_number} to {_temp::2}
+
+        replace all "&e" and "&9" in {_loop} with "&c"
+        add "%{_loop}% %{_number}% шт." to {_result::lore::*}
+    else:
+      add "" to {_result::lore::*}
+      add "&a✔ &fВы можете сделать этот предмет" to {_result::lore::*}
+
+    # Увеличить...
+    set {_increase} to player head named "&9⬆ &fУвеличить кол-во на 1"
+    add "{SkullOwner:{Id:""3554e03b-982d-44f1-8be4-71785ba822f8"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWFkNmM4MWY4OTlhNzg1ZWNmMjZiZTFkYzQ4ZWFlMmJjZmU3NzdhODYyMzkwZjU3ODVlOTViZDgzYmQxNGQifX19""}]}}}" to item-nbt of {_increase}
+
+    format gui slot 11 of {_player} with {_increase} to run:
+      if {_data::number} < 32:
+        add 1 to {_data::number}
+      craftWindow({_player}, {_path}, {_data::number}, {_location})
+            
+    # Сам предмет...
+    format gui slot 13 of {_player} with {_data::number} of {_result::item} named "%{_result::name}%" with lore coloured {_result::lore::*} to run:
+      if {_ingredients::need::*} is not set:
+        # Начинаем крафтить предмет..
+        if {craftWindow::%{_player}%::worker} is set:
+          set {craftWindow::%{_player}%::worker} to "stop"
+          wait 1 tick
+        
+        close {_player}'s inventory
+
+        loop {_craft::*}:
+          delete {_ingredient::contains}
+
+          set {_temp::*} to loop-value split at "/"
+          set {_temp::ingredient::*} to {_temp::2} split at "="
+
+          set {_ingredient} to getIngregient({_temp::ingredient::1})
+          set {_number} to {_temp::ingredient::2} parsed as number
+
+          set {_number} to {_number} * {_data::number}
+
+          loop all items in {_player}'s inventory:
+            if name of loop-item contains "%{_ingredient}%":
+              remove {_number} of loop-item from {_player}'s inventory
+        craft({_path},{_data::number},{_location})
+
+    # Уменьшить...
+    set {_decrease} to player head named "&9⬇ &fУменьшить кол-во на 1"
+    add "{SkullOwner:{Id:""8f54d1c4-c599-4c54-8993-2cb371649c33"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODgyZmFmOWE1ODRjNGQ2NzZkNzMwYjIzZjg5NDJiYjk5N2ZhM2RhZDQ2ZDRmNjVlMjg4YzM5ZWI0NzFjZTcifX19""}]}}}" to item-nbt of {_decrease}
+
+    format gui slot 15 of {_player} with {_decrease} to run:
+      if {_data::number} > 1:
+        reduce {_data::number} by 1
+      craftWindow({_player}, {_path}, {_data::number}, {_location})
+
+    set {_waiting} to true
+
+    if {craftWindow::%{_player}%::worker} is set:
+      set {craftWindow::%{_player}%::worker} to "stop"
+      wait 1 tick
+
+    delete {craftWindow::%{_player}%::worker}
+
+    while {_waiting} is true:
+      if {_player} is offline:
+        stop
+        
+      if {craftWindow::%{_player}%::worker} is not set:
+        set {craftWindow::%{_player}%::worker} to true
+      if {craftWindow::%{_player}%::worker} is "stop":
+        stop
+      if {craftWindow::%{_player}%::path} is not set:
+        set {craftWindow::%{_player}%::path} to {_path}
+      if {craftWindow::%{_player}%::number} is not set:
+        set {craftWindow::%{_player}%::number} to {_data::number} 
+      if {craftWindow::%{_player}%::location} is not set:
+        set {craftWindow::%{_player}%::location} to {_location}
+
+      set {_name} to name of {_player}'s current inventory
+      if {_name} doesn't contain "Создание":
+        openWorkbench({_player}, {_location})
+        stop
+      wait 1 tick
+
+on drop:
+  if {craftWindow::%player%::worker} is true:
+    cancel event
+    delete {craftWindow::%player%::worker}
+
+on pickup:
+  if {craftWindow::%player%::worker} is true:
+    delete {craftWindow::%player%::worker}
+    wait 1 tick
+    if {craftWindow::%player%::worker} is true:
+      set {craftWindow::%player%::worker} to "stop"
+      wait 1 tick
+      craftWindow(player, {craftWindow::%player%::path}, {craftWindow::%player%::number}, {craftWindow::%player%::location})
+      delete {craftWindow::%player%::*}
+
+
+
+function craft(path: string, number: number, location: location):
+  # Добавляем информацию об воркере
+  set {_worker} to random integer between 0000 and 9999
+  
+  set {crafts::%{_worker}%::worker} to true
+  set {crafts::%{_worker}%::path} to {_path}
+  set {crafts::%{_worker}%::number} to {_number}
+  set {crafts::%{_worker}%::loaction} to {_location}
+
+  add {_worker} to {crafts::workers::*}
+  
+  # Берём нужные данные...
+  set {_file} to "/home/Addons/Crafts/recipes.yml"
+  set {_random} to random integer between 0000 and 9999
+
+  load yaml "%{_file}%" as "%{_random}%"
+
+  set {_result::item} to skript-yaml value "%{_path}%.result.item" from "%{_random}%"
+  set {_result::item} to {_result::item} parsed as item
+  if {_result::item} is not set:
+    set {_result::item} to barrier
+
+  set {_result::name} to skript-yaml value "%{_path}%.result.name" from "%{_random}%"
+
+  set {_result::time} to skript-yaml value "%{_path}%.result.time" from "%{_random}%"
+  set {_result::time} to {_result::item} parsed as number
+  if {_result::time} is not set:
+    set {_result::time} to 2
+
+  set {_data::number} to {_number}
+
+  unload yaml "%{_random}%"
+
+  # Показываем и обновленяем голограмму крафта...
+  set {_location::holo} to {_location}
+  add 2.5 to y coordinate of {_location::holo}
+
+  create a new hologram with line {_result::item}, "&9⚒ &fСоздание предмета:", "%{_result::name}% %{_number}% шт.", "&7Загрузка" at {_location::holo} and store it in the variable {_hologram}
+
+  set {_waiting} to true
+  set {_time} to {_result::time} * {_data::number}
+
+  delete {crafts::%{_location}%::*}
+
+  while {_waiting} is true:
+    if {_time} <= 0:
+      # Меняем голограмму...
+      set {crafts::%{_location}%::hologram} to {_hologram}
+      set all lines of hologram {_hologram} to {_result::item}, "&9⚒ &fСоздание предмета:", "%{_result::name}% %{_number}% шт.", "&a✔ &fПредмет создан"
+      
+      set {crafts::%{_location}%::number} to {_data::number}
+      set {crafts::%{_location}%::done} to true
+
+      stop
+
+    if {crafts::%{_location}%::crafting} is not set:
+      set {crafts::%{_location}%::crafting} to true
+    set {crafts::%{_location}%::time} to {_time}
+    if {crafts::%{_location}%::path} is not set:
+      set {crafts::%{_location}%::path} to {_path}
+
+    set {_time::seconds} to round({_time})    
+    set {_time::visual} to "%{_time::seconds}% seconds" parsed as timespan
+    set {_time::visual} to "%{_time::visual}%"
+
+    replace all "minutes" in {_time::visual} with "м."
+    replace all "minute" in {_time::visual} with "м."
+
+    replace all "seconds" in {_time::visual} with "с."
+    replace all "second" in {_time::visual} with "с."
+
+    replace all " and " in {_time::visual} with " "
+
+    # set all lines of hologram {_hologram} to 
+    set the last lines of hologram {_hologram} to "&7%{_time::visual}%"
+    # set {_result::item}, "&9⚒ &fСоздание предмета:", "%{_result::name}% %{_number}% шт.", "&7%{_time::visual}%"
+
+    reduce {_time} by 0.05
+    wait 1 tick
+
+command deltest:
+  trigger:
+    set {_holograms::*} to all holograms created by skript-holo
+    loop {_holograms::*}:
+      delete hologram loop-value

@@ -1,0 +1,325 @@
+alchemy:
+  # ✔
+  bottle:
+    sysId: bottle
+    craft: "id/glass=3"
+    result:
+      time: 15
+      item: bottle
+      name: "&9⚒ &fБутылка"
+      lore:
+      - "&7~ В бутылках можно переносить воду, которая, как мы знаем,"
+      - "&7очень полезна.. Только вот главное правильную воду"
+      - "&7набрать..."
+
+armor:
+  leather:
+    ordinary:
+      helmet:
+        sysId: ordinary_leather_helmet
+        craft: "id/string=4+id/leather=2"
+        result:
+          time: 25
+          item: leather helmet
+          name: "&9♚ &fКожаная шапка"
+          lore:
+          - "&7~ Броня - это одна из самых важных вещей при"
+          - "&7зомби апокалипсисе. Потому что именно броня"
+          - "&7будет вас защищать от монстров, и будет давать"
+          - "&7вам очень много тепла.."
+          durability: 35
+      chestplate:
+        sysId: ordinary_leather_chestplate
+        craft: "id/string=6+id/leather=3"
+        result:
+          time: 35
+          item: leather chestplate
+          name: "&9♚ &fКожаная куртка"
+          lore:
+          - "&7~ Как и любая другая броня, куртка является"
+          - "&7неотъемлимой часть вашей защиты. Именно куртка"
+          - "&7защищает самую большую часть вашего тела!"
+          durability: 35
+      leggings:
+        sysId: ordinary_leather_leggings
+        craft: "id/string=4+id/leather=2"
+        result:
+          time: 25
+          item: leather leggings
+          name: "&9♚ &fКожаные штаны"
+          lore:
+          - "&7~ Штаны не столь нужны, но они позволяют вам"
+          - "&7находится в тепле. Тем более, ноги - это самый"
+          - "&7главный жизненый инструмент, потому, что именно"
+          - "&7ноги вас двигают, потому, что именно с их"
+          - "&7помощью вы можете оставаться живыми"
+          durability: 35
+      boots:
+        sysId: ordinary_leather_boots
+        craft: "id/string=2+id/leather=2"
+        result:
+          time: 15
+          item: leather boots
+          name: "&9♚ &fКожаные ботинки"
+          lore:
+          - "&7~ Ботинки очень удобны, и позволяют вам немного быстрее"
+          - "&7ходить и бегать. Очень рекомендуется делать ботинки"
+          - "&7в первую очередь. С их помощью вы сможете намного"
+          - "&7быстрее убегать от монстров и людей..."
+          nbt: '{HideFlags:2,AttributeModifiers:[{UUIDMost:6108875612168079855L,UUIDLeast:-7831034525906526947L,Amount:0.03d,AttributeName:"generic.movementSpeed",Operation:0,Name:"generic.movementSpeed"}]}'
+          durability: 35
+
+building:
+  torch:
+    sysId: extinguished_torch
+    craft: "id/stick=2+id/flint=1"
+    result:
+      time: 4
+      item: redstone torch
+      name: "&c⬛ &fПотухший факел"
+      lore:
+      - "&7~ Вот именно для этого и нужна зажигалка! Именно" 
+      - "&7с её помощью вы будете снова поджигать эти факела."
+  # torch:
+  #   sysId: extinguished_torch
+  #   craft: "id/stick=2+id/flint=1"
+  #   result:
+  #     time: 4
+  #     item: redstone torch
+  #     name: "&e⬛ &fФакел"
+  #     lore:
+  #     - "&7~ С помощью факела можно освещять территорию."
+  #     - "&7Ну, вроде бы это всё, что можно делать с его"
+  #     - "&7помощью."
+  fence:
+    wooden:
+      sysId: wooden_fence
+      craft: "id/stick=6+id/wood=2"
+      result:
+        time: 15
+        item: oak fence
+        name: "&e⬛ &fДубовый забор"
+        lore:
+        - "&7~ Очень полезная вещь для ограждения грядок, загонов"
+        - "&7ну и много другого..."
+  slab:
+    wooden:
+      sysId: wooden_slab
+      craft: "id/wood=2"
+      result:
+        time: 10
+        item: oak slab
+        name: "&e⬛ &fДубовая плита"
+        lore:
+        - "&7~ Мертвякам очень сложно пробираться через эти"
+        - "&7дубовые плиты. Помимо этого, плиты стоят намного"
+        - "&7дешевле чем доски, но являются очень слабыми."
+    brick:
+      sysId: brick_slab
+      craft: "id/brick=2"
+      skill: "building.brick.slab"
+      result:
+        time: 25
+        item: brick slab
+        name: "&e⬛ &fКирпичная плитка"
+        lore:
+        - "&7~ Кирпичная плитка всегда будет красивее деревянной."
+        - "&7Плюс к этому, кирпичная плитка более защищённей чем"
+        - "&7деревянная, и сможет простоять много лет."
+  stairs:
+    wooden:
+      sysId: wooden_stairs
+      craft: "id/stick=3+id/wooden=2"
+      result:
+        time: 10
+        item: oak stairs
+        name: "&e⬛ &fДубовая лестница"
+        lore:
+        - "&7~ Лестница довольно-таки полезна в каких-то больших"
+        - "&7помещениях, где очень много этажей."
+    brick:
+      sysId: brick_stairs
+      craft: "id/stick=3+id/brick=2"
+      skill: "building.brick.stairs"
+      result:
+        time: 25
+        item: brick stairs
+        name: "&e⬛ &fКирпичная лестница"
+        lore:
+        - "&7~ Такая же сильная и прочная как и кирпичная плитка,"
+        - "&7возможно даже сильнее! Довольно-таки красивая."
+  planks:
+    sysId: planks
+    craft: "id/wood=3"
+    result:
+      item: oak planks
+      name: "&e⬛ &fДоска"
+      lore:
+      - "&7~ С помощью досок вы сможете закрывать двери и давать"
+      - "&7им дополнительную защиту от монстров и других выживших"
+      - "&7так же вы можете ставить доски и использовать их при"
+      - "&7постройке каких-то сооружений"
+  # ladder:
+  #   sysId: ladder
+  #   craft: "id/stick=6+id/wood"
+  #   result:
+  #     item: ladder
+  #     name: "&e⬛ &fЛестница"
+  #     lore:
+  #     - "&7~ Очень полезная вещь, поможем вам чуть ли не везде!"
+  # ✔
+  chest:
+    sysId: chest
+    craft: "id/wood=8+id/iron_nugget=1"
+    result:
+      time: 25
+      item: chest
+      name: "&e⬛ &fСундук"
+      lore:
+      - "&7~ В сундуке можно спокойно хранить вещи, но будьте"
+      - "&7осторожнее, ибо из сундука кто-то может украсть"
+      - "&7все ваши вещи!"
+  # ✔
+  # campfire:
+  #   level1:
+  #     sysId: campfire_level1
+  #     craft: "id/wood=3+id/stick=1"
+  #     result:
+  #       time: 10
+  #       item: blaze powder
+  #       name: "&e⬛ &fПростой Костёр"
+  #       lore:
+  #       - "&7~ На костре вы сможете пожарить себе немного еды, а так"
+  #       - "&7же сможете согреться, находясь рядом с ним."
+  # ✔
+  glass_pane:
+    sysId: glass_pane
+    craft: "id/glass=3"
+    result:
+      time: 35
+      item: white glass pane
+      name: "&e⬛ &fСтеклопакет"
+      lore:
+      - "&7~ С помощью этого стеклопакета вы сможете починить окна"
+      - "&7в вашем поселении, ну или поставить их с самого начала."
+
+weapons:
+  bows:
+    # ✔
+    ordinary:
+      sysId: bow_ordinary
+      craft: "id/stick_birch=3+id/string=3"
+      result:
+        time: 45
+        item: bow
+        name: "&c⚔ &fЛук"
+        lore:
+        - "&7~ Ваше самое начальное дальнестрельное оружее. С его помощью"
+        - "&7вы сможете отстреливаться на дальних дистанциях, не подставляя"
+        - "&7себя под великую опасность."
+        durability: 325
+    # ✔
+    enhanced:
+      sysId: bow_enhanced
+      craft: "id/stick_birch=3+id/string=3+id/iron_nugget=2"
+      skill: "weaponary.bows.enchanced"
+      result:
+        time: 70
+        item: bow
+        name: "&c⚔ &fУкреплённый Лук"
+        lore:
+        - "&7~ Довольно-таки крепкий лук, которые теперь не подведёт"
+        - "&7вас почти что никогда! Главное правильно к нему относиться,"
+        - "&7прямо как к своему сыну..."
+        durability: 200
+  bullets:
+    # ✔
+    arrow:
+      sysId: bullet_arrow
+      craft: "id/stick=2+id/flint=1"
+      result:
+        time: 4
+        item: arrow
+        name: "&9⚀ &fСтрела"
+        lore:
+        - "&7~ Используется вместе с луком. Железный наконечник этой"
+        - "&7стрелы способен пробить плоть любого существа."
+    # ✔
+    # small:
+    #   sysId: bullet_small
+    #   craft: "id/gunpowder=1+id/copper_alloy=5+id/iron_nugget=1"
+    #   result:
+    #     time: 8
+    #     item: ghast tear
+    #     name: "&e⚀ &fПатроный малого калибра"
+    #     lore:
+    #     - "&7~ Ну, я думаю вам не стоит рассказывать где использовать"
+    #     - "&7патроны? Конечно же они используются в различных"
+    #     - "&7пистолетах и автоматах, которые спасут вам жизнь!"
+
+
+tools:
+  # ✔
+  crowbar:
+    sysId: crowbar
+    craft: "id/stick=2+id/iron_nugget=2"
+    result:
+      time: 20
+      item: iron hoe
+      name: "&9⚒ &fЛом"
+      lore:
+      - "&7~ С помощью лома вы сможете ломать довольно-таки сложные"
+      - "&7постройки на материалы. Будь-то кирпичная кладка, ну или какой-то"
+      - "&7надоедливый столик - всё сломает!" 
+  # ✔
+  shears:
+    sysId: shears
+    craft: "id/iron_nugget=2"
+    result:
+      time: 15
+      item: shears
+      name: "&9⚒ &fНожницы"
+      lore:
+      - "&7~ С помощью ножниц вы сможете с корнями вырывать траву,"
+      - "&7что бы она больше никогда не заростала. Почти такой"
+      - "&7же принцип работает и с листвой."
+  # 
+  shovel:
+    sysId: shovel
+    craft: "id/stick=2+id/stone=1"
+    result:
+      time: 10
+      item: wooden shovel
+      name: "&9⚒ &fЛопата"
+      lore:
+      - "&7~ С её помощью вы сможете добывать землю, песок и многое"
+      - "&7другое. Только вот эта вот лопата очень слабая, и не факт что"
+      - "&7её вообще на что-то хватит..."
+      durability: 35
+      nbt: '{HideFlags:2,AttributeModifiers:[{UUIDMost:3110150603614405811L,UUIDLeast:-7835187332428309644L,Amount:0.5d,AttributeName:"generic.attackDamage",Operation:0,Name:"generic.attackDamage"}]}'
+  # ✔
+  lighter:
+    sysId: lighter
+    craft: "id/flint=1+id/iron_nugget=1"
+    result:
+      time: 20
+      item: flint and steel
+      name: "&9⚒ &fЗажигалка"
+      lore:
+      - "&7~ Поможет вам разжечь костёр, возле которого"
+      - "&7вы можете согреться. Так же на костре вы можете"
+      - "&7приготовить различную еду."
+  # ✔
+  axe:
+    sysId: stone_axe
+    craft: "id/stone=3+id/stick=2"
+    result:
+      time: 20
+      item: stone axe
+      name: "&9⚒ &fТопор"
+      lore:
+      - "&7~ А вот это уже получше маленького топорика!"
+      - "&7этот топор намного прочнее, и смертоностнее. С его помощью"
+      - "&7вы уже сможете хоть что-то сделать..."
+      durability: 50
+      nbt: '{HideFlags:2,AttributeModifiers:[{UUIDMost:-8848999092783791582L,UUIDLeast:-8295389583596828946L,Amount:1.5d,AttributeName:"generic.attackDamage",Operation:0,Name:"generic.attackDamage"}]}'

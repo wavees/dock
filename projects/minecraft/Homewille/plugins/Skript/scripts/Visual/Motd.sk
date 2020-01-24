@@ -1,0 +1,10 @@
+on server list ping:
+  add "Бери эти доски и закалачивай двери!" to {_random::*}
+  add "*Яростные звуки гитары у костра*" to {_random::*}
+  add "Дай мне биту и я набюью ему *бальник" to {_random::*}
+  add "Так, что у нас сегодня на обед? Тушенка..." to {_random::*}
+
+  set {_random} to random element of {_random::*}
+
+  set the motd to "&a△ &fHomewille %nl%&7~ %{_random}%"
+  # uid139721

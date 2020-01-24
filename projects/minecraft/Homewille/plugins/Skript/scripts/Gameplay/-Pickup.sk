@@ -1,0 +1,121 @@
+on drop:
+  set {_item::dropped} to event-dropped item
+  set {_item::normal} to event-item
+
+  set {_waiting} to true 
+  set {_check} to 20
+  
+  while {_waiting} is set:
+
+    set {_location} to location of {_item::dropped}
+    if block below {_location} is not air or glass or any trapdoor or any flower or sign or fern or any button or any pressure plate or slab:
+      set {_block} to block at {_location}
+      set {_location} to location of block at {_location}
+      
+      spawn armor stand at {_location}
+      set {_entity} to last spawned armor stand
+      kill {_item::dropped}
+
+      add "{Invisible:1b,Invulnerable:1b}" to entity-nbt of {_entity}
+
+      # Настройка...
+      if {_item} is not player head:
+        reduce y coordinate of {_location} by 1.3
+
+        # Настрока под проблемные блоки...
+        if {_block} is pressure plate:
+          add 0.1 to y coordinate of {_location} 
+        else if {_block} is slab:
+          if "%{_block}%" contains "bottom":
+            add 0.5 to y coordinate of {_location}
+           
+        teleport {_entity} to {_location}
+
+        add "{NoGravity:1b,ShowArms:1b,Pose:{RightArm:[0f,%random integer between -270 and 270%f,0f]}}" to entity-nbt of {_entity}
+
+        set {_entity}'s held item to {_item::normal}
+      stop
+
+    reduce {_check} by 0.05
+    if {_check} <= 0:
+      stop
+    wait 1 tick
+
+# on right click on armor stand:
+#   set {_entity} to event-entity
+#   set {_item} to {_entity}'s held item
+#   if {_item} is set:
+#     if distance between block at player and block at location of {_entity} <= 2:
+#       if {pickup::%player%::confirmation} is not set:
+#         give player {_item}
+#         kill {_entity}
+#       else:
+#         delete {pickup::%player%::confirmation}
+
+on right click:
+  set {_item} to player's held item
+  if player is sneaking:
+    if {pickup::%player%::confirmation} is not set:
+      if {pickup::%player%::worker} is set:
+        delete {pickup::%player%::worker}
+        wait 1 tick
+      
+      set {pickup::%player%::confirmation} to true
+      
+      set {_time} to 2
+      set {_waiting} to true
+
+      while {_waiting} is true:
+        if player is offline:
+          delete {pickup::%player%::worker}
+          delete {pickup::%player%::confirmation}
+          
+          stop
+        if {pickup::%player%::confirmation} is not set:
+          set {pickup::%player%::confirmation} to true
+        if {pickup::%player%::worker} is not set:
+          set {pickup::%player%::worker} to true
+        if {pickup::%player%::worker} is "stop":
+          delete {pickup::%player%::worker}
+          delete {pickup::%player%::confirmation}
+          
+          stop
+        send action bar "&9ℹ &fНажмите ещё раз, что бы положить этот предмет." to player
+
+        reduce {_time} by 0.05
+        if {_time} <= 0:
+          delete {pickup::%player%::confirmation}
+          delete {pickup::%player%::worker}
+
+          stop
+        wait 1 tick
+    else:
+      set {_location} to location of event-block
+      set {_item} to 1 of player's held item
+
+      remove 1 of {_item} from player's inventory
+
+      reduce y coordinate of {_location} by 0.3
+
+      spawn armor stand at {_location}
+      set {_entity} to last spawned armor stand
+
+      add "{Invisible:1b,Invulnerable:1b,NoGravity:1b,ShowArms:1b,Pose:{RightArm:[0f,%random integer between -270 and 270%f,0f]}}" to entity-nbt of {_entity}
+
+      set {_entity}'s held item to {_item}
+      wait 1 tick
+      delete {pickup::%player%::confirmation}
+      
+on right click:
+  set {_location} to location of event-block
+  loop all entities in radius 2 blocks around {_location}:
+    if "%loop-entity%" contains "armor stand":
+      set {_entity} to loop-entity
+      set {_item} to {_entity}'s held item
+      if {_item} is set:
+        if distance between block at player and block at location of {_entity} <= 2:
+          if {pickup::%player%::confirmation} is not set:
+            give player {_item}
+            kill {_entity} 
+          else:
+            delete {pickup::%player%::confirmation}

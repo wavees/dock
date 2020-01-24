@@ -1,0 +1,81 @@
+BLEEDING:
+  damage: 0.5
+  chance-percent: 10.0
+INFECTION:
+  damage: 0.5
+  chance-percent: 15.0
+ARROW_SLOW:
+  slow-duration: 3.0
+SHOCKING_SKELETON_ARROWS:
+  shock-duration: 2.0
+SILVERFISHES_SUMMON:
+  chance-percent: 35.0
+  min: 1.0
+  max: 2.0
+CREEPER_REVENGE:
+  chance-percent: 15.0
+FALL_STUN:
+  duration-amplifier: 1.0
+STONE_STIFFNESS:
+  damage: 1.0
+WITCH_SCROLLS:
+  chance-percent: 55.0
+  damage: 2.5
+  slow-duration: 2.0
+EVERBURNING_BLAZES:
+  burn-duration: 3.0
+ELECTRICITY_SHOCK:
+  damage: 6.0
+NETHER_SHIELD:
+  chance-percent: 37.5
+  dmg-reflection-percent: 75.0
+  burn-duration: 3.0
+UNDEAD_RAGE:
+  rage-duration: 4.0
+BONE_GRENADES:
+  chance-percent: 35.0
+  damage: 6.0
+POISONED_SLIMES:
+  amplifier: 1.0
+  duration: 3.0
+  chance-percent: 65.0
+ANGRY_SPIDERS:
+  damage: 4.0
+  duration: 3.0
+  amplifier: 1.0
+ENDER_POWER:
+  chance-percent: 70.0
+  duration: 6.0
+UNDEAD_GUNNERS:
+  damage: 7.0
+  block-damage: 0.0
+BONE_WIZARDS:
+  fireball-damage: 7.0
+  fireball-duration: 3.0
+  frost-curse-damage: 6.0
+  frost-curse-duration: 2.0
+  frost-curse-amplifier: 1.0
+FREDDY:
+  chance-percent: 5.0
+DANGEROUS_COAL:
+  chance-percent: 5.0
+  radius: 5.0
+WITHER_RUSH:
+  damage: 3.0
+MOB_CRITICAL_STRIKES:
+  damage-percent: 75.0
+THIEF_SLIMES:
+  chance-percent: 55.0
+  exp: 12.0
+WITHER_MACHINEGUN:
+  damage: 2.0
+BLOOD_MOON:
+  chance: 2.0
+  damage-percent: 60.0
+  slow-duration: 3.0
+  increase-damage: 2.0
+  speed: 2.0
+  damage-resistance: 2.0
+THUNDERSTORM:
+  chance: 25.0
+  damage-percent: 125.0

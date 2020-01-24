@@ -1,0 +1,53 @@
+HELMET:
+  name: Helmet
+  lore:
+  - Give your monster a helmet!
+CHESTPLATE:
+  name: Chestplate
+  lore:
+  - Give your monster a nice chestplate!
+LEGGINGS:
+  name: Leggings
+  lore:
+  - Give your monster some pants!
+BOOTS:
+  name: Boots
+  lore:
+  - Give your monster a pair of shoes!
+MAIN_HAND:
+  name: Main Hand Item
+  lore:
+  - The item your monster holds.
+OFF_HAND:
+  name: Off Hand Item
+  lore:
+  - The second item your monster holds.
+  - '&cNot supported in 1.8.'
+POTION_EFFECTS:
+  name: Potion Effects
+  lore:
+  - Give your monster cool potion effects!
+DISPLAY_NAME:
+  name: Display Name
+  lore:
+  - Set the custom name of your monster.
+SPAWN_COEFFICIENT:
+  name: Spawn Coefficient
+  lore:
+  - Spawn Coefficient determins the frequency
+  - at which your monster spawns.
+  - '&9See Wiki for more detailed information.'
+MAXIMUM_HEALTH:
+  name: Maximum Health
+  lore:
+  - The amount of HP your monster has.
+ATTACK_DAMAGE:
+  name: Attack Damage
+  lore:
+  - Increase the damage your monster deals.
+  - '&cNot supported in 1.8.'
+MOVEMENT_SPEED:
+  name: Movement Speed
+  lore:
+  - Make your monster faster!
+  - '&cNot supported in 1.8.'

@@ -1,0 +1,43 @@
+ingredients:
+  wood:
+    item: oak planks
+    name: "&9⚁ &fКусок дерева"
+  wooden:
+    item: oak planks
+    name: "&e⬛ &fДоска"
+  brick:
+    item: brick
+    name: "&9⚁ &fКирпич"
+  stick:
+    item: stick
+    name: "&9⚀ &fПалка"
+  stick_birch:
+    item: stick
+    name: "&9⚁ &fБерёзовая Палка"
+  string:
+    item: string
+    name: "&9⚀ &fНить"
+  flint:
+    item: flint
+    name: "&9⚀ &fКремень"
+  stone:
+    item: firework charge
+    name: "&9⚀ &fКамень"
+  iron_nugget:
+    item: iron nugget
+    name: "&9⚀ &fКусочек железа"
+  gunpowder:
+    item: gunpowder
+    name: "&9⚃ &fПорох"
+  copper_alloy:
+    item: brick
+    name: "&9⚃ &fМедный сплав"
+  sand:
+    item: sand
+    name: "&9⚀ &fПесок"
+  glass:
+    item: white glass
+    name: "&9⚁ &fСтекло"
+  leather:
+    item: leather
+    name: "&9⚁ &fКожа"
